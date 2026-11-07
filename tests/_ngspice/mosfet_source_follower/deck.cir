@@ -1,0 +1,25 @@
+* NMOS source follower (BS170, bulk tied to source) (generated for the Hotwire cross-check)
+VCC vcc 0 DC 9
+VIN in 0 DC 0 AC 1 SIN(0 1 1000 0 0)
+C1 in g 1e-06
+R1 vcc g 1000000
+R2 g 0 1000000
+M1 vcc g s s BS170_M1 W=0.0001 L=0.0001
+RS s 0 2200
+C2 s out 1e-05
+RL out 0 10000
+.model BS170_M1 NMOS(LEVEL=1 VTO=2 KP=0.25 GAMMA=0 PHI=0.6 LAMBDA=0.01 RD=0.7 RS=0 CBD=5.5e-11 CBS=0 IS=1e-15 PB=0.8 MJ=0.5 FC=0.5 CGSO=1.7e-07 CGDO=7e-08 CGBO=0 LD=0)
+.options rshunt=1e12 reltol=1e-6 abstol=1e-15 vntol=1e-9 itl1=500 itl4=200
+.control
+set wr_singlescale
+set wr_vecnames
+option numdgt=12
+op
+wrdata <repo>/tests/_ngspice/mosfet_source_follower/op.txt v(vcc) v(in) v(g) v(s) v(out)
+ac dec 20 10 1000000
+wrdata <repo>/tests/_ngspice/mosfet_source_follower/ac.txt v(out)
+tran 5e-06 0.005 0 5e-06
+linearize v(vcc) v(in) v(g) v(s) v(out)
+wrdata <repo>/tests/_ngspice/mosfet_source_follower/tran.txt v(vcc) v(in) v(g) v(s) v(out)
+.endc
+.end

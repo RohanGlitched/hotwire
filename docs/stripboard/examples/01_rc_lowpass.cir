@@ -1,0 +1,9 @@
+*@ title RC treble-cut filter
+* One resistor and one capacitor: a gentle 6 dB/octave treble roll-off at about 1.6 kHz.
+*@ in VIN
+*@ out out
+VIN in 0 DC 0 AC 1
+R1 in out 10k
+C1 out 0 10n
+R2 out 0 1meg
+.end

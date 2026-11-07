@@ -1,0 +1,15 @@
+Common-emitter clean booster
+
+1. Cut a piece of stripboard 9 holes wide by 7 strips (0.9 x 0.7 in), strips running left to right. Strips are lettered A to G from the top and holes numbered 1 to 9 from the left, so hole C12 is strip C, hole 12. The layout is drawn from the component side.
+2. Cut the copper at 1 hole: G4. On the copper side left and right are mirrored, so count from the same corner. Twist a 3.5 mm drill bit by hand until the copper ring is gone, then hold the board to a light to make sure no sliver bridges the cut.
+3. RC 10k resistor (brown black orange gold) from hole A1 to hole D1.
+4. R2 82k resistor (grey red orange gold) from hole E4 to hole B4.
+5. R1 470k resistor (yellow violet yellow gold) from hole A5 to hole E5.
+6. RE 1k resistor (brown black red gold) from hole F7 to hole B7.
+7. R3 1M resistor (brown black green gold) from hole G9 to hole B9.
+8. C1 100nF film capacitor from hole G1 to hole E1.
+9. Q1 2N3904 (TO-92, pins EBC left to right): E at F3, B at E3, C at D3. Polarity check: flat face toward the right.
+10. CE 22µF electrolytic, 16 V or more: + at hole F6, - at hole B6. Polarity check: the stripe (-) faces hole B6.
+11. C2 1µF electrolytic, 16 V or more: + at hole D8, - at hole G8. Polarity check: the stripe (-) faces hole G8.
+12. Off-board wiring, stranded wire about 10 cm long: IN pad at hole G2 to the input jack tip (through the footswitch for true bypass); +9V pad at hole A2 to the DC jack + (the sleeve lug on a 2.1 mm centre-negative jack) or the battery clip +; GND pad at hole B2 to the jack sleeves and the DC jack ground; OUT pad at hole G6 to the output jack tip (through the footswitch for true bypass).
+13. Before power: with a meter on ohms, check for shorts between +9V (A2) and GND (B2). It must not read near 0 ohms. Then check the neighbouring strips at every cut for solder bridges.

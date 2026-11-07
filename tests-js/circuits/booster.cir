@@ -1,0 +1,15 @@
+*@ title Single-transistor booster
+*@ in VIN
+*@ out out
+*@ supply VCC
+*@ pot RV1 0 out vol 100k taper=log pos=0.7 label="Volume"
+VCC vcc 0 DC 9
+VIN in 0 DC 0 AC 1
+C1 in b 100n
+R1 vcc b 470k
+R2 b 0 100k
+Q1 c b e 2N3904
+R3 vcc c 10k
+R4 e 0 1k
+C3 e 0 10u
+C2 c vol 1u

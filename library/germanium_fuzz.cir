@@ -1,0 +1,26 @@
+*@ title Two-transistor germanium fuzz
+* The same two-stage feedback fuzz built with leaky AC128 germanium PNPs, wired negative-ground (emitters to +9 V) so it shares a standard supply: rounder and warmer than the silicon version, with a softer clip. With this pair it cleans up less when you roll the guitar volume back (about 18% THD at a quarter turn, against under 5% for the silicon one).
+*@ in VIN
+*@ out out
+*@ supply VCC
+*@ pot RV1 vcc fw e2 1k taper=lin pos=1 label="Fuzz"
+*@ pot RV2 0 out o 500k taper=log pos=0.5 label="Volume"
+*@ spec gain_db(1000) > 20 dB
+*@ spec v(c2) in 2.5..6 V
+*@ spec region(Q1) == active
+*@ spec region(Q2) == active
+*@ spec thd(500, 0.1) > 15 %
+*@ spec supply_current < 2mA
+VIN in 0 DC 0 AC 1
+VCC vcc 0 DC 9
+RPD in 0 1meg
+C1 in b1 2.2u
+Q1 c1 b1 vcc AC128
+R1 c1 0 33k
+Q2 c2 c1 e2 AC128
+RF e2 b1 100k
+CF fw vcc 22u
+R4 c2 r34 470
+R3 r34 0 8.2k
+C3 c2 o 10n
+.end

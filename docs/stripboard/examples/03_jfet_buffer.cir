@@ -1,0 +1,18 @@
+*@ title JFET input buffer
+* J201 source follower with a 4.5 V bias divider: high input impedance, unity gain, low output impedance.
+*@ in VIN
+*@ out out
+*@ supply VCC
+VCC vcc 0 DC 9
+VIN in 0 DC 0 AC 1
+R1 in 0 1meg
+C1 in g 100n
+R2 g vb 1meg
+R3 vcc vb 1meg
+R4 vb 0 1meg
+C2 vb 0 10u
+J1 vcc g s J201
+R5 s 0 3.3k
+C3 s out 1u
+R6 out 0 100k
+.end

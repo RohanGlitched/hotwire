@@ -1,0 +1,19 @@
+*@ title Sallen-Key low-pass on +/-9 V
+* Unity-gain second-order low-pass around a single TL071 on a bipolar supply.
+*@ in VIN
+*@ out out
+*@ supply VCC VEE
+VCC vcc 0 DC 9
+VEE 0 vee DC 9
+VIN in 0 DC 0 AC 1
+R0 in 0 1meg
+C0 in a 1u
+R1 a b 10k
+R2 b c 10k
+C1 b fo 22n
+C2 c 0 10n
+X1 c fo vcc vee fo TL071
+C3 vcc 0 10u
+C4 0 vee 10u
+R3 fo out 100
+.end

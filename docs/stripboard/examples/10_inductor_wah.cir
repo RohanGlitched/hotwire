@@ -1,0 +1,27 @@
+*@ title Inductor wah filter
+* Classic wah topology: a 500 mH inductor resonates in the feedback of a 2N5088 gain stage, feeding a buffer.
+*@ in VIN
+*@ out out
+*@ supply VCC
+*@ pot RV1 rp rw 0 100k taper=revlog label="Sweep"
+VCC vcc 0 DC 9
+VIN in 0 DC 0 AC 1
+R1 in 0 68k
+C1 in b1 10n
+R2 vcc b1 470k
+R3 b1 0 22k
+Q1 c1 b1 e1 2N5088
+R4 vcc c1 22k
+R5 e1 0 390
+C2 c1 rp 220n
+L1 rp lb 500m
+R6 lb 0 33k
+C3 lb e1 4.7u
+C4 rw b2 10n
+R7 vcc b2 470k
+R8 b2 0 470k
+Q2 vcc b2 e2 2N5088
+R9 e2 0 10k
+C5 e2 out 4.7u
+R10 out 0 100k
+.end

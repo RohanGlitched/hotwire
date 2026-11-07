@@ -1,0 +1,14 @@
+*@ title Three-knob tone stack
+* Passive treble/bass/mid stack in the classic amp style; all three pots mount on the enclosure.
+*@ in VIN
+*@ out out
+*@ pot RV1 t out bt 250k taper=log label="Treble"
+*@ pot RV2 bt mt mt 1meg taper=log label="Bass"
+*@ pot RV3 mt 0 0 25k taper=lin label="Mid"
+VIN in 0 DC 0 AC 1
+C1 in t 250p
+R1 in a 100k
+C2 a bt 22n
+C3 a mt 22n
+R2 out 0 1meg
+.end

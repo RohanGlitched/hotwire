@@ -1,0 +1,18 @@
+* Half-wave rectifier with reservoir cap (stiff diode switching) (generated for the Hotwire cross-check)
+VIN in 0 DC 0 SIN(0 5 50 0 0)
+D1 in out D1N4148
+C1 out 0 0.0001
+RL out 0 1000
+.model D1N4148 D(IS=2.52e-09 N=1.752 RS=0.568 CJO=4e-12 M=0.4 TT=1.15e-08)
+.options rshunt=1e12 reltol=1e-6 abstol=1e-15 vntol=1e-9 itl1=500 itl4=200
+.control
+set wr_singlescale
+set wr_vecnames
+option numdgt=12
+op
+wrdata <repo>/tests/_ngspice/half_wave_rectifier/op.txt v(in) v(out)
+tran 2e-05 0.06 0 2e-05
+linearize v(in) v(out)
+wrdata <repo>/tests/_ngspice/half_wave_rectifier/tran.txt v(in) v(out)
+.endc
+.end

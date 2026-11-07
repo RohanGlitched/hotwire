@@ -1,0 +1,34 @@
+*@ title Silicon diode hard clipper
+* Non-inverting op-amp gain stage (up to 46 dB) into a pair of 1N4148 diodes to ground: buzzy, aggressive distortion that squares off near 0.6 V; listen for the raspy top end and the sustain at high Distortion.
+*@ in VIN
+*@ out out
+*@ supply VCC
+*@ pot RV1 y y x 1meg taper=revlog pos=0.7 label="Distortion"
+*@ pot RV2 0 out clip 100k taper=log pos=0.7 label="Level"
+*@ spec gain_db(1000) in 10..16 dB
+*@ spec f3db_low < 60 Hz
+*@ spec v(o) in 4.3..4.7 V
+*@ spec thd(1000, 0.2) > 15 %
+*@ spec vout_peak(1000, 0.2) < 0.5 V
+*@ spec supply_current < 3mA
+VIN in 0 DC 0 AC 1
+VCC vcc 0 DC 9
+* input pulldown, coupling and 4.5 V bias
+RPD in 0 1meg
+C1 in p 10n
+RB p vref 1meg
+RREF1 vcc vref 10k
+RREF2 vref 0 10k
+CREF vref 0 47u
+* gain stage: 1 + 1M / (4.7k + Distortion), the 47n cap rolls off the lows
+XU1 p n vcc 0 o TL071
+RF o n 1meg
+RG n x 4.7k
+CG y 0 47n
+* hard clipper: series resistor into back-to-back silicon diodes to ground
+C2 o c 1u
+R2 c clip 10k
+D1 clip 0 1N4148
+D2 0 clip 1N4148
+C3 clip 0 1n
+.end

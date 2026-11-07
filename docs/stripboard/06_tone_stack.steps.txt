@@ -1,0 +1,15 @@
+Three-knob tone stack
+
+1. Cut a piece of stripboard 6 holes wide by 8 strips (0.6 x 0.8 in), strips running left to right. Strips are lettered A to H from the top and holes numbered 1 to 6 from the left, so hole C12 is strip C, hole 12. The layout is drawn from the component side.
+2. No track cuts are needed.
+3. R1 100k resistor (brown black yellow gold) from hole A3 to hole D3.
+4. R2 1M resistor (brown black green gold) from hole E5 to hole H5.
+5. C1 250pF ceramic capacitor from hole A2 to hole C2.
+6. C3 22nF film capacitor from hole D2 to hole F2.
+7. C2 22nF film capacitor from hole D4 to hole B4.
+8. Off-board wiring, stranded wire about 10 cm long: GND pad at hole H1 to the jack sleeves and the DC jack ground; IN pad at hole A1 to the input jack tip (through the footswitch for true bypass); OUT pad at hole E1 to the output jack tip (through the footswitch for true bypass); RV1 Treble pot (A250k, shaft toward you, lugs down, lug 1 on the left): lug 1 to C1, lug 2 to E3, lug 3 to B5; RV2 Bass pot (A1M, shaft toward you, lugs down, lug 1 on the left): lug 1 to B1, lug 2 to F1, lug 3 to F1; RV3 Mid pot (B25k, shaft toward you, lugs down, lug 1 on the left): lug 1 to F3, lug 2 to H2, lug 3 to H2.
+9. Before connecting anything: with a meter on ohms, check for shorts between neighbouring strips at every cut, and that IN and OUT do not read near 0 ohms to GND.
+
+Notes:
+- RV2 lugs 2 and 3 share a net: join them on the pot with a short wire and run one wire to the RV2·2+3 pad.
+- RV3 lugs 2 and 3 share a net: join them on the pot with a short wire and run one wire to the RV3·2+3 pad.

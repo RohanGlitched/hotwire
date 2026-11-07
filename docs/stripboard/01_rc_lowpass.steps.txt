@@ -1,0 +1,9 @@
+RC treble-cut filter
+
+1. Cut a piece of stripboard 4 holes wide by 5 strips (0.4 x 0.5 in), strips running left to right. Strips are lettered A to E from the top and holes numbered 1 to 4 from the left, so hole C12 is strip C, hole 12. The layout is drawn from the component side.
+2. No track cuts are needed.
+3. R1 10k resistor (brown black orange gold) from hole D2 to hole A2.
+4. R2 1M resistor (brown black green gold) from hole A3 to hole E3.
+5. C1 10nF film capacitor from hole A4 to hole E4.
+6. Off-board wiring, stranded wire about 10 cm long: OUT pad at hole A1 to the output jack tip (through the footswitch for true bypass); IN pad at hole D1 to the input jack tip (through the footswitch for true bypass); GND pad at hole E1 to the jack sleeves and the DC jack ground.
+7. Before connecting anything: with a meter on ohms, check for shorts between neighbouring strips at every cut, and that IN and OUT do not read near 0 ohms to GND.

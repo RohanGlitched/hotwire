@@ -1,0 +1,8 @@
+*@ title Inductor wah filter
+*@ in VIN
+*@ out out
+VIN in 0 DC 0 AC 1
+R1 in a 1k
+L1 a out 500m
+C1 out 0 10n
+R2 out 0 33k

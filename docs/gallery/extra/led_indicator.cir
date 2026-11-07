@@ -1,0 +1,9 @@
+*@ title LED indicator with reverse-polarity protection
+* 9 V battery, series 1N4001 against a reversed plug, a 2.2k current-limiting resistor and a red LED.
+*@ supply VBAT
+VBAT bat 0 DC 9
+D1 bat v 1N4001
+C1 v 0 100u
+R1 v a 2.2k
+D2 a 0 LED_RED
+.end

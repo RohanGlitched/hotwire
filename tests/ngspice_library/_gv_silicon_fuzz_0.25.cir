@@ -1,0 +1,34 @@
+*@ title Two-transistor silicon fuzz
+* Two direct-coupled 2N3904 stages with DC feedback from the second emitter to the first base: thick, sputtery square-wave fuzz with long sustain; the Fuzz knob unbypasses the second emitter.
+*@ in VIN
+*@ out out
+*@ supply VCC
+*@ pot RV1 0 fw e2 1k taper=lin pos=1 label="Fuzz"
+*@ pot RV2 0 out o 500k taper=log pos=0.5 label="Volume"
+*@ spec gain_db(1000) > 25 dB
+*@ spec v(c2) in 3.5..6 V
+*@ spec region(Q1) == active
+*@ spec region(Q2) == active
+*@ spec thd(500, 0.1) > 20 %
+*@ spec supply_current < 2mA
+*@ spec thd_gv(300, 0.1, 1.0) > 30 %
+*@ spec thd_gv(300, 0.1, 0.25) < 10 %
+VIN gtr_emf 0 DC 0 AC 1
+LGTR_PU gtr_emf gtr_l 2.5
+RGTR_PU gtr_l gtr_hot 6.5k
+CGTR_PU gtr_hot 0 120p
+RGTR_VOLA gtr_hot in 458942
+RGTR_VOLB in 0 41058
+CGTR_CABLE in 0 300p
+VCC vcc 0 DC 9
+RPD in 0 1meg
+C1 in b1 2.2u
+Q1 c1 b1 0 2N3904
+R1 vcc c1 33k
+Q2 c2 c1 e2 2N3904
+RF e2 b1 100k
+CF fw 0 22u
+R3 vcc r34 4.7k
+R4 r34 c2 470
+C3 c2 o 10n
+.end

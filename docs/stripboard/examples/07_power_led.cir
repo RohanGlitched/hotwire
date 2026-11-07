@@ -1,0 +1,13 @@
+*@ title Power section with LED and reverse-polarity diode
+* Series Schottky against a reversed adapter, bulk and HF decoupling, a 4.5 V reference and a status LED.
+*@ supply VDC
+VDC dcin 0 DC 9
+D1 dcin vcc 1N5817
+C1 vcc 0 100u
+C2 vcc 0 100n
+R1 vcc vref 10k
+R2 vref 0 10k
+C3 vref 0 47u
+R3 vcc led 4.7k
+D2 led 0 LED_RED
+.end

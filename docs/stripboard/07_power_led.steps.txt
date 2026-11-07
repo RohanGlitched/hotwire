@@ -1,0 +1,14 @@
+Power section with LED and reverse-polarity diode
+
+1. Cut a piece of stripboard 10 holes wide by 6 strips (1.0 x 0.6 in), strips running left to right. Strips are lettered A to F from the top and holes numbered 1 to 10 from the left, so hole C12 is strip C, hole 12. The layout is drawn from the component side.
+2. No track cuts are needed.
+3. R3 4.7k resistor (yellow violet red gold) from hole A4 to hole E4.
+4. R1 10k resistor (brown black orange gold) from hole A8 to hole F8.
+5. R2 10k resistor (brown black orange gold) from hole F9 to hole C9.
+6. D1 1N5817 diode: anode at hole D1, cathode at hole A1. Polarity check: the band goes at hole A1.
+7. C2 100nF film capacitor from hole A3 to hole C3.
+8. C1 100µF electrolytic, 16 V or more: + at hole A2, - at hole C2. Polarity check: the stripe (-) faces hole C2.
+9. C3 47µF electrolytic, 16 V or more: + at hole F10, - at hole C10. Polarity check: the stripe (-) faces hole C10.
+10. D2 red LED: anode (long leg) at hole E5, cathode (short leg, flat side) at hole C5. Polarity check: flat side toward hole C5.
+11. Off-board wiring, stranded wire about 10 cm long: +9V pad at hole D2 to the DC jack + (the sleeve lug on a 2.1 mm centre-negative jack) or the battery clip +; GND pad at hole C6 to the jack sleeves and the DC jack ground.
+12. Before power: with a meter on ohms, check for shorts between +9V (D2) and GND (C6). It must not read near 0 ohms. Then check the neighbouring strips at every cut for solder bridges.

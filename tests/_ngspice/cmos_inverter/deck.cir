@@ -1,0 +1,20 @@
+* CMOS inverter switching a 1 nF load (generated for the Hotwire cross-check)
+VDD vdd 0 DC 5
+VIN in 0 DC 0 PULSE(0 5 2e-05 1e-05 1e-05 4e-05 0.0001)
+MP out in vdd vdd PMC_MP W=0.0002 L=0.0001
+MN out in 0 0 NMC_MN W=0.0001 L=0.0001
+CL out 0 1e-09
+.model PMC_MP PMOS(LEVEL=1 VTO=-1 KP=0.0001 GAMMA=0.4 PHI=0.65 LAMBDA=0.02 RD=0 RS=0 CBD=2.5e-11 CBS=2.5e-11 IS=1e-14 PB=0.8 MJ=0.5 FC=0.5 CGSO=5e-08 CGDO=2e-08 CGBO=1e-08 LD=0)
+.model NMC_MN NMOS(LEVEL=1 VTO=1 KP=0.0002 GAMMA=0.4 PHI=0.65 LAMBDA=0.02 RD=0 RS=0 CBD=2e-11 CBS=2e-11 IS=1e-14 PB=0.8 MJ=0.5 FC=0.5 CGSO=5e-08 CGDO=2e-08 CGBO=1e-08 LD=0)
+.options rshunt=1e12 reltol=1e-6 abstol=1e-15 vntol=1e-9 itl1=500 itl4=200
+.control
+set wr_singlescale
+set wr_vecnames
+option numdgt=12
+op
+wrdata <repo>/tests/_ngspice/cmos_inverter/op.txt v(vdd) v(in) v(out)
+tran 2e-07 0.0002 0 2e-07
+linearize v(vdd) v(in) v(out)
+wrdata <repo>/tests/_ngspice/cmos_inverter/tran.txt v(vdd) v(in) v(out)
+.endc
+.end

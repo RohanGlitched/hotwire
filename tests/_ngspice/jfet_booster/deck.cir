@@ -1,0 +1,26 @@
+* JFET common-source booster (J201) (generated for the Hotwire cross-check)
+VCC vcc 0 DC 9
+VIN in 0 DC 0 AC 1 SIN(0 0.3 1000 0 0)
+C1 in g 1e-07
+RG g 0 1000000
+J1 d g s J201
+RD vcc d 6800
+RSRC s 0 680
+CS s 0 2.2e-05
+C2 d out 1e-06
+RL out 0 100000
+.model J201 NJF(VTO=-0.6 BETA=0.001304 LAMBDA=0.0024 RD=1 RS=1 IS=1.145e-13 CGD=4.06e-12 CGS=4.06e-12 PB=0.5)
+.options rshunt=1e12 reltol=1e-6 abstol=1e-15 vntol=1e-9 itl1=500 itl4=200
+.control
+set wr_singlescale
+set wr_vecnames
+option numdgt=12
+op
+wrdata <repo>/tests/_ngspice/jfet_booster/op.txt v(vcc) v(in) v(g) v(d) v(s) v(out)
+ac dec 20 10 1000000
+wrdata <repo>/tests/_ngspice/jfet_booster/ac.txt v(out)
+tran 5e-06 0.005 0 5e-06
+linearize v(vcc) v(in) v(g) v(d) v(s) v(out)
+wrdata <repo>/tests/_ngspice/jfet_booster/tran.txt v(vcc) v(in) v(g) v(d) v(s) v(out)
+.endc
+.end

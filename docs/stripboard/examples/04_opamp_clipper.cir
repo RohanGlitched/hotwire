@@ -1,0 +1,25 @@
+*@ title Op-amp gain stage with diode clipper
+* Non-inverting TL072 stage (one half used), gain set by the Gain pot, then a pair of 1N4148 diodes to ground.
+*@ in VIN
+*@ out out
+*@ supply VCC
+*@ pot RV1 fb inm inm 500k taper=log label="Gain"
+VCC vcc 0 DC 9
+VIN in 0 DC 0 AC 1
+R1 vcc vref 10k
+R2 vref 0 10k
+C1 vref 0 47u
+C2 in inp 100n
+R3 inp vref 1meg
+X1 inp inm vcc 0 oa TL072
+R4 inm n4 4.7k
+C3 n4 0 1u
+R5 oa fb 1k
+C4 oa inm 100p
+C5 oa n5 1u
+R6 n5 clip 1k
+D1 clip 0 1N4148
+D2 0 clip 1N4148
+C6 clip out 1u
+R7 out 0 100k
+.end

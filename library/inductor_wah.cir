@@ -1,0 +1,35 @@
+*@ title Inductor wah band-pass
+* Common-emitter stage loaded by a 500 mH inductor tank and buffered by an emitter follower; the Pedal pot bootstraps the tank capacitor so the resonance sweeps from about 480 Hz (heel) to 3 kHz (toe), the vocal "wah". This file is parked mid-sweep.
+*@ in VIN
+*@ out out
+*@ supply VCC
+*@ pot RV1 0 pw pb 1k taper=lin pos=0.5 label="Pedal"
+*@ spec peak_db in 3..12 dB
+*@ spec peak_f in 600..900 Hz
+*@ spec f3db_low in 450..800 Hz
+*@ spec f3db_high in 700..1200 Hz
+*@ spec gain_db(100) < -6 dB
+*@ spec gain_db(5000) < -3 dB
+*@ spec region(Q1) == active
+*@ spec supply_current < 3mA
+VIN in 0 DC 0 AC 1
+VCC vcc 0 DC 9
+RPD in 0 1meg
+C1 in x 100n
+R1 x b 33k
+RB1 vcc b 82k
+RB2 b 0 15k
+Q1 c b e BC549C
+RE1 e e2 470
+RE2 e2 0 2k
+CE e2 0 47u
+RC vcc c 15k
+L1 c lb 500m
+CL lb vcc 22u
+Q2 vcc c e3 BC549C
+RE3 e3 0 2.2k
+C4 e3 pb 22u
+CT pw c 220n
+C5 e3 out 1u
+RL out 0 100k
+.end

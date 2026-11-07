@@ -1,0 +1,17 @@
+*@ title MOSFET common-source booster (body effect)
+*@ in VIN
+*@ out out
+*@ supply VCC
+VCC vcc 0 DC 9
+VIN in 0 DC 0 AC 1
+C1 in g 100n
+R1 vcc g 2.2meg
+R2 g 0 1meg
+M1 d g s 0 NB W=200u L=100u
+RD vcc d 4.7k
+RS1 s s2 220
+RS2 s2 0 680
+CS s2 0 47u
+C2 d out 1u
+RL out 0 100k
+.model NB NMOS(VTO=1.6 KP=0.1 LAMBDA=0.01 GAMMA=0.4 PHI=0.7 RD=1 RS=0.5 CBD=30p CBS=30p CGSO=1.5e-7 CGDO=4e-8)

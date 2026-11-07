@@ -1,0 +1,22 @@
+*@ title Op-amp overdrive
+*@ in VIN
+*@ out out
+*@ supply VCC
+*@ pot RV1 fb fbw nm 500k taper=log pos=0.5 label="Drive"
+VCC vcc 0 DC 9
+VIN in 0 DC 0 AC 1
+RA vcc ref 10k
+RB ref 0 10k
+CR ref 0 10u
+C1 in p 100n
+RP p ref 1meg
+XU1 p nm vcc 0 o TL072
+R1 nm g 4.7k
+CG g 0 1u
+R2 o fb 10k
+D1 o nm 1N4148
+D2 nm o 1N4148
+CF o nm 47p
+RFB fbw nm 1
+C2 o out 1u
+RL out 0 100k

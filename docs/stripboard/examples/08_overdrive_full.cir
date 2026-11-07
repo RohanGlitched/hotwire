@@ -1,0 +1,44 @@
+*@ title Full overdrive pedal board
+* Power section, buffered input, op-amp clipping stage with Drive, a passive Tone filter, a buffer and Level.
+*@ in VIN
+*@ out out
+*@ supply VDC
+*@ pot RV1 drv inm inm 500k taper=log label="Drive"
+*@ pot RV2 tn tw vref 20k taper=lin label="Tone"
+*@ pot RV3 lv out 0 100k taper=log label="Level"
+VDC dcin 0 DC 9
+VIN in 0 DC 0 AC 1
+* power
+D1 dcin vcc 1N5817
+C1 vcc 0 100u
+C2 vcc 0 100n
+R1 vcc vref 10k
+R2 vref 0 10k
+C3 vref 0 47u
+R3 vcc led 4.7k
+D2 led 0 LED_RED
+* input buffer
+R4 in 0 1meg
+C4 in b1 22n
+R5 b1 vref 510k
+Q1 vcc b1 e1 2N5088
+R6 e1 0 10k
+* clipping stage
+C5 e1 inp 1u
+R7 inp vref 510k
+X1 inp inm vcc 0 oa TL072
+R8 inm n8 4.7k
+C6 n8 0 47n
+R9 oa drv 51k
+C7 oa inm 51p
+D3 oa inm 1N4148
+D4 inm oa 1N4148
+* tone and output buffer
+R10 oa tn 1k
+C8 tn 0 220n
+C9 tw 0 100n
+R11 tw tb 1k
+X2 tb ob vcc 0 ob TL072
+C10 ob lv 10u
+R12 lv 0 100k
+.end

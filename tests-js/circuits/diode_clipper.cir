@@ -1,0 +1,8 @@
+*@ title Diode clipper with tone cap
+*@ in VIN
+*@ out a
+VIN in 0 DC 0 AC 1
+R1 in a 4.7k
+D1 a 0 1N4148
+D2 0 a 1N4148
+C1 a 0 10n

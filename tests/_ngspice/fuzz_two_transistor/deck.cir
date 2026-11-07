@@ -1,0 +1,30 @@
+* Two-transistor fuzz (silicon NPN, fuzz-face topology) (generated for the Hotwire cross-check)
+VCC vcc 0 DC 9
+VIN in 0 DC 0 AC 1 SIN(0 0.1 200 0 0)
+RS in g 10000
+C1 g b1 2.2e-06
+Q1 c1 b1 0 QBC549
+R1 vcc c1 33000
+Q2 c2 c1 e2 QBC549
+R3 vcc c2 8200
+R5 e2 b1 100000
+RE e2 0 1000
+CE e2 0 2.2e-05
+R4 c2 o1 470
+C3 o1 out 1e-08
+RL out 0 500000
+.model QBC549 NPN(IS=7.049e-15 BF=381.7 BR=2.359 VAF=62.79 NF=1.008 NR=1.005 RB=10 RC=0.9 CJE=1.15e-11 MJE=0.6721 VJE=0.5 CJC=5.25e-12 MJC=0.3147 VJC=0.5683 TF=4.102e-10 TR=1e-08)
+.options rshunt=1e12 reltol=1e-6 abstol=1e-15 vntol=1e-9 itl1=500 itl4=200
+.control
+set wr_singlescale
+set wr_vecnames
+option numdgt=12
+op
+wrdata <repo>/tests/_ngspice/fuzz_two_transistor/op.txt v(vcc) v(in) v(g) v(b1) v(c1) v(c2) v(e2) v(o1) v(out)
+ac dec 20 10 100000
+wrdata <repo>/tests/_ngspice/fuzz_two_transistor/ac.txt v(out)
+tran 5e-06 0.015 0 5e-06
+linearize v(vcc) v(in) v(g) v(b1) v(c1) v(c2) v(e2) v(o1) v(out)
+wrdata <repo>/tests/_ngspice/fuzz_two_transistor/tran.txt v(vcc) v(in) v(g) v(b1) v(c1) v(c2) v(e2) v(o1) v(out)
+.endc
+.end

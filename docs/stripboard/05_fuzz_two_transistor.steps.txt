@@ -1,0 +1,19 @@
+Two-transistor fuzz
+
+1. Cut a piece of stripboard 13 holes wide by 7 strips (1.3 x 0.7 in), strips running left to right. Strips are lettered A to G from the top and holes numbered 1 to 13 from the left, so hole C12 is strip C, hole 12. The layout is drawn from the component side.
+2. Cut the copper at 4 holes: A7, B5, B10, E7. On the copper side left and right are mirrored, so count from the same corner. Twist a 3.5 mm drill bit by hand until the copper ring is gone, then hold the board to a light to make sure no sliver bridges the cut.
+3. Fit 1 wire link (insulated solid-core wire, lying flat): B9 to C9.
+4. R1 33k resistor (orange orange orange gold) from hole A1 to hole D1.
+5. R2 100k resistor (brown black yellow gold) from hole B6 to hole E6.
+6. R3 470 resistor (yellow violet brown gold) from hole A6 to hole A9 lying along the strip over the cut.
+7. R4 8.2k resistor (grey red red gold) from hole A10 to hole E10.
+8. C3 10nF film capacitor from hole E9 to hole G9.
+9. Q1 BC549C (TO-92, pins CBE left to right): C at D2, B at E2, E at F2. Polarity check: flat face toward the left.
+10. Q2 BC549C (TO-92, pins CBE left to right): C at E8, B at D8, E at C8. Polarity check: flat face toward the right.
+11. C1 2.2µF electrolytic, 16 V or more: + at hole E4, - at hole B4. Polarity check: the stripe (-) faces hole B4.
+12. C2 22µF electrolytic, 16 V or more: + at hole B13, - at hole F13. Polarity check: the stripe (-) faces hole F13.
+13. Off-board wiring, stranded wire about 10 cm long: IN pad at hole B2 to the input jack tip (through the footswitch for true bypass); GND pad at hole F1 to the jack sleeves and the DC jack ground; +9V pad at hole A4 to the DC jack + (the sleeve lug on a 2.1 mm centre-negative jack) or the battery clip +; RV1 Fuzz pot (B1k, shaft toward you, lugs down, lug 1 on the left): lug 1 to B7, lug 2 to B11, lug 3 to F11; RV2 Volume pot (A500k, shaft toward you, lugs down, lug 1 on the left): lug 1 to G11, lug 2 to the output jack tip, lug 3 to F4.
+14. Before power: with a meter on ohms, check for shorts between +9V (A4) and GND (F1). It must not read near 0 ohms. Then check the neighbouring strips at every cut for solder bridges.
+
+Notes:
+- Nothing on the board touches net out: wire the output jack tip and RV2 lug 2 straight to each other.

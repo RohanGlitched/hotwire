@@ -1,0 +1,34 @@
+*@ title Baxandall active bass and treble control
+* Inverting op-amp with the classic Baxandall feedback network: flat with both knobs at noon, then up to about 15 dB of boost or cut in the lows and highs; listen to how the shelves leave the mids alone.
+*@ in VIN
+*@ out out
+*@ supply VCC
+*@ pot RVB bb bw ba 100k taper=lin pos=0.5 label="Bass"
+*@ pot RVT tb tw ta 100k taper=lin pos=0.5 label="Treble"
+*@ spec gain_db(1000) in -1..1 dB
+*@ spec gain_db(50) in -2..2 dB
+*@ spec gain_db(15000) in -2..2 dB
+*@ spec v(o) in 4.3..4.7 V
+*@ spec thd(1000, 0.5) < 0.1 %
+*@ spec supply_current < 12mA
+VIN in 0 DC 0 AC 1
+VCC vcc 0 DC 9
+RPD in 0 1meg
+CIN in i 10u
+RREF1 vcc vref 10k
+RREF2 vref 0 10k
+CREF vref 0 47u
+* bass network
+R1 i ba 10k
+R2 bb o 10k
+C1 ba bw 22n
+C2 bw bb 22n
+R3 bw n 10k
+* treble network
+C3 i ta 4.7n
+C4 tb o 4.7n
+RTW tw n 3.3k
+XU1 vref n vcc 0 o NE5532
+COUT o out 10u
+RL out 0 100k
+.end

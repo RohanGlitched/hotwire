@@ -1,0 +1,16 @@
+JFET input buffer
+
+1. Cut a piece of stripboard 8 holes wide by 9 strips (0.8 x 0.9 in), strips running left to right. Strips are lettered A to I from the top and holes numbered 1 to 8 from the left, so hole C12 is strip C, hole 12. The layout is drawn from the component side.
+2. No track cuts are needed.
+3. R3 1M resistor (brown black green gold) from hole A1 to hole F1.
+4. R1 1M resistor (brown black green gold) from hole E3 to hole I3.
+5. R4 1M resistor (brown black green gold) from hole F4 to hole I4.
+6. R2 1M resistor (brown black green gold) from hole C6 to hole F6.
+7. R5 3.3k resistor (orange orange red gold) from hole B7 to hole I7.
+8. R6 100k resistor (brown black yellow gold) from hole D8 to hole I8.
+9. C1 100nF film capacitor from hole E2 to hole C2.
+10. J1 J201 (TO-92, pins DSG left to right): D at A4, S at B4, G at C4. Polarity check: flat face toward the left.
+11. C2 10µF electrolytic, 16 V or more: + at hole F2, - at hole I2. Polarity check: the stripe (-) faces hole I2.
+12. C3 1µF electrolytic, 16 V or more: + at hole B3, - at hole D3. Polarity check: the stripe (-) faces hole D3.
+13. Off-board wiring, stranded wire about 10 cm long: GND pad at hole I1 to the jack sleeves and the DC jack ground; +9V pad at hole A2 to the DC jack + (the sleeve lug on a 2.1 mm centre-negative jack) or the battery clip +; IN pad at hole E4 to the input jack tip (through the footswitch for true bypass); OUT pad at hole D4 to the output jack tip (through the footswitch for true bypass).
+14. Before power: with a meter on ohms, check for shorts between +9V (A2) and GND (I1). It must not read near 0 ohms. Then check the neighbouring strips at every cut for solder bridges.

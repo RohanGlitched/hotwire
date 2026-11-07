@@ -1,0 +1,28 @@
+Inductor wah filter
+
+1. Cut a piece of stripboard 16 holes wide by 10 strips (1.6 x 1.0 in), strips running left to right. Strips are lettered A to J from the top and holes numbered 1 to 16 from the left, so hole C12 is strip C, hole 12. The layout is drawn from the component side.
+2. Cut the copper at 4 holes: B9, C10, D6, F5. On the copper side left and right are mirrored, so count from the same corner. Twist a 3.5 mm drill bit by hand until the copper ring is gone, then hold the board to a light to make sure no sliver bridges the cut.
+3. Fit 1 wire link (insulated solid-core wire, lying flat): D15 to B15.
+4. R2 470k resistor (yellow violet yellow gold) from hole A1 to hole D1.
+5. R1 68k resistor (blue grey orange gold) from hole F4 to hole J4.
+6. R3 22k resistor (red red orange gold) from hole D5 to hole J5.
+7. R5 390 resistor (orange white brown gold) from hole C6 to hole J6.
+8. R10 100k resistor (brown black yellow gold) from hole F8 to hole J8.
+9. R4 22k resistor (red red orange gold) from hole A10 to hole E10.
+10. R6 33k resistor (orange orange orange gold) from hole G11 to hole J11.
+11. R7 470k resistor (yellow violet yellow gold) from hole A11 to hole D11.
+12. R9 10k resistor (brown black orange gold) from hole C12 to hole J12.
+13. R8 470k resistor (yellow violet yellow gold) from hole D14 to hole J14.
+14. L1 500mH inductor from hole B7 to hole G7.
+15. C1 10nF film capacitor from hole F2 to hole D2.
+16. C2 220nF film capacitor from hole E8 to hole B8.
+17. C4 10nF film capacitor from hole H13 to hole D13.
+18. Q1 2N5088 (TO-92, pins EBC left to right): E at C3, B at D3, C at E3. Polarity check: flat face toward the left.
+19. Q2 2N5088 (TO-92, pins EBC left to right): E at C14, B at B14, C at A14. Polarity check: flat face toward the right.
+20. C3 4.7µF electrolytic, 16 V or more: + at hole C9, - at hole G9. Polarity check: the stripe (-) faces hole G9.
+21. C5 4.7µF electrolytic, 16 V or more: + at hole C16, - at hole F16. Polarity check: the stripe (-) faces hole F16.
+22. Off-board wiring, stranded wire about 10 cm long: GND pad at hole J1 to the jack sleeves and the DC jack ground; +9V pad at hole A4 to the DC jack + (the sleeve lug on a 2.1 mm centre-negative jack) or the battery clip +; IN pad at hole F1 to the input jack tip (through the footswitch for true bypass); OUT pad at hole F10 to the output jack tip (through the footswitch for true bypass); RV1 Sweep pot (C100k, shaft toward you, lugs down, lug 1 on the left): lug 1 to B5, lug 2 to H9, lug 3 to J9.
+23. Before power: with a meter on ohms, check for shorts between +9V (A4) and GND (J1). It must not read near 0 ohms. Then check the neighbouring strips at every cut for solder bridges.
+
+Notes:
+- C3 sits with almost no DC across it, so its polarity hardly matters; the layout puts + toward e1.

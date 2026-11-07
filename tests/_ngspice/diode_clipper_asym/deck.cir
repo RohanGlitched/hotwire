@@ -1,0 +1,23 @@
+* Asymmetric clipper: two silicon diodes one way, one germanium the other (generated for the Hotwire cross-check)
+VIN in 0 DC 0 AC 1 SIN(0 3 500 0 0)
+R1 in out 10000
+D1 out m D1N4148
+D2 m 0 D1N4148
+D3 0 out D1N34A
+C1 out 0 4.7e-09
+.model D1N34A D(IS=2e-07 N=1.3 RS=7 CJO=5e-13 M=0.5)
+.model D1N4148 D(IS=2.52e-09 N=1.752 RS=0.568 CJO=4e-12 M=0.4 TT=1.15e-08)
+.options rshunt=1e12 reltol=1e-6 abstol=1e-15 vntol=1e-9 itl1=500 itl4=200
+.control
+set wr_singlescale
+set wr_vecnames
+option numdgt=12
+op
+wrdata <repo>/tests/_ngspice/diode_clipper_asym/op.txt v(in) v(out) v(m)
+ac dec 20 10 100000
+wrdata <repo>/tests/_ngspice/diode_clipper_asym/ac.txt v(out)
+tran 5e-06 0.006 0 5e-06
+linearize v(in) v(out) v(m)
+wrdata <repo>/tests/_ngspice/diode_clipper_asym/tran.txt v(in) v(out) v(m)
+.endc
+.end

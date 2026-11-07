@@ -1,0 +1,26 @@
+*@ title MOSFET clean boost
+* BS170 common-source stage on a gate divider with a partly bypassed source resistor: about +18 dB of clean gain, a touch of even-order warmth when pushed, then a level knob.
+*@ in VIN
+*@ out out
+*@ supply VCC
+*@ pot RV1 0 out o 100k taper=log pos=1 label="Level"
+*@ spec gain_db(1000) in 14..22 dB
+*@ spec gain_db(30) > 12 dB
+*@ spec gain_db(10000) > 14 dB
+*@ spec v(d) in 3..7 V
+*@ spec region(M1) == saturation
+*@ spec thd(1000, 0.1) < 3 %
+*@ spec supply_current < 2mA
+VIN in 0 DC 0 AC 1
+VCC vcc 0 DC 9
+RPD in 0 1meg
+C1 in g 100n
+R1 vcc g 1.5meg
+R2 g 0 1meg
+M1 d g s BS170
+RD vcc d 4.7k
+RS1 s s2 470
+RS2 s2 0 1.3k
+CS s2 0 47u
+C2 d o 1u
+.end

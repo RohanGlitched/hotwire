@@ -1,0 +1,38 @@
+name: hotwire
+version: 1.0.0
+manifest_version: 2
+api_version: 1
+description: "Analog circuit design bench: Hermes writes a SPICE netlist from plain English, proves it against measurable specs with a built-in simulator, and lets you hear and play through it before you solder anything."
+author: Rohan Borade
+license: MIT
+homepage: https://github.com/RohanGlitched/hotwire
+tags: [electronics, spice, audio, guitar, pedals, simulation, hardware, education]
+requires_hermes: ">=0.23.0"
+provides_tools:
+  - circuit_check
+  - circuit_simulate
+  - circuit_audition
+  - circuit_tune
+  - circuit_explain
+  - circuit_match
+  - circuit_yield
+  - circuit_bom
+  - circuit_build
+  - circuit_export
+  - circuit_library
+provides_hooks:
+  - pre_llm_call
+python_dependencies:
+  - "numpy>=1.26,<3"
+config_schema:
+  design_hint:
+    type: bool
+    default: true
+    label: "Suggest Hotwire for electronics questions"
+    description: "Adds one line to the model's context when a message talks about circuits, so it reaches for the circuit tools and the analog-design skill."
+  sample_rate:
+    type: int
+    default: 48000
+    choices: [44100, 48000]
+    label: "Audition sample rate"
+    description: "Sample rate of the audio Hotwire renders through your circuits."

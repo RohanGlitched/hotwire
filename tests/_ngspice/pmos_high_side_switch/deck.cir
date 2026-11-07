@@ -1,0 +1,23 @@
+* P-channel high-side switch (IRF9510) driven by an NPN level shifter (generated for the Hotwire cross-check)
+VCC vcc 0 DC 12
+VIN in 0 DC 0 PULSE(0 5 5e-05 2e-06 2e-06 0.0002 0.0004)
+RB in b 10000
+Q1 g b 0 Q2N3904
+RG vcc g 10000
+M1 load g vcc vcc IRF9510_M1 W=0.0001 L=0.0001
+RL load 0 100
+CL load 0 1e-07
+.model Q2N3904 NPN(IS=6.734e-15 BF=416.4 BR=0.7371 NF=1 NR=1 VAF=74.03 IKF=0.06678 ISE=6.734e-15 NE=1.259 RB=10 RC=1 CJE=4.493e-12 MJE=0.2593 VJE=0.75 CJC=3.638e-12 MJC=0.3085 VJC=0.75 TF=3.012e-10 TR=2.395e-07)
+.model IRF9510_M1 PMOS(LEVEL=1 VTO=-3 KP=0.35 GAMMA=0 PHI=0.6 LAMBDA=0.005 RD=0.5 RS=0 CBD=4.3e-10 CBS=0 IS=1e-14 PB=0.8 MJ=0.5 FC=0.5 CGSO=1.8e-06 CGDO=1.8e-07 CGBO=0 LD=0)
+.options rshunt=1e12 reltol=1e-6 abstol=1e-15 vntol=1e-9 itl1=500 itl4=200
+.control
+set wr_singlescale
+set wr_vecnames
+option numdgt=12
+op
+wrdata <repo>/tests/_ngspice/pmos_high_side_switch/op.txt v(vcc) v(in) v(b) v(g) v(load)
+tran 5e-07 0.0008 0 5e-07
+linearize v(vcc) v(in) v(b) v(g) v(load)
+wrdata <repo>/tests/_ngspice/pmos_high_side_switch/tran.txt v(vcc) v(in) v(b) v(g) v(load)
+.endc
+.end

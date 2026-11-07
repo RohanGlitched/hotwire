@@ -1,0 +1,27 @@
+* MOSFET common-source amplifier, bulk to ground (body effect, RD/RS, junction caps) (generated for the Hotwire cross-check)
+VCC vcc 0 DC 12
+VIN in 0 DC 0 AC 1 SIN(0 0.01 1000 0 0)
+C1 in g 1e-06
+R1 vcc g 2200000
+R2 g 0 1000000
+M1 d g s 0 NMG_M1 W=0.0002 L=0.0001
+RD vcc d 4700
+RS s 0 1000
+CS s 0 0.0001
+C2 d out 1e-06
+RL out 0 100000
+.model NMG_M1 NMOS(LEVEL=1 VTO=1.8 KP=0.12 GAMMA=0.45 PHI=0.7 LAMBDA=0.01 RD=1.5 RS=0.8 CBD=3.5e-11 CBS=3e-11 IS=1e-14 PB=0.8 MJ=0.5 FC=0.5 CGSO=1.6e-07 CGDO=4e-08 CGBO=0 LD=0)
+.options rshunt=1e12 reltol=1e-6 abstol=1e-15 vntol=1e-9 itl1=500 itl4=200
+.control
+set wr_singlescale
+set wr_vecnames
+option numdgt=12
+op
+wrdata <repo>/tests/_ngspice/mosfet_cs_amp/op.txt v(vcc) v(in) v(g) v(d) v(s) v(out)
+ac dec 20 10 1000000
+wrdata <repo>/tests/_ngspice/mosfet_cs_amp/ac.txt v(out)
+tran 5e-06 0.005 0 5e-06
+linearize v(vcc) v(in) v(g) v(d) v(s) v(out)
+wrdata <repo>/tests/_ngspice/mosfet_cs_amp/tran.txt v(vcc) v(in) v(g) v(d) v(s) v(out)
+.endc
+.end

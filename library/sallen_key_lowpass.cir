@@ -1,0 +1,30 @@
+*@ title Sallen-Key low-pass filter (1 kHz Butterworth)
+* Second-order unity-gain low-pass on a single 9 V supply: flat to 1 kHz then -40 dB/decade, twice as steep as a plain RC; sounds like a darker, smoother treble cut.
+*@ in VIN
+*@ out out
+*@ supply VCC
+*@ tol R=1% C=5%
+*@ spec fc in 980..1260 Hz
+*@ spec gain_db(100) in -0.3..0.3 dB
+*@ spec gain_db(10000) < -36 dB
+*@ spec v(fo) in 4.3..4.7 V
+*@ spec supply_current < 2mA
+*@ spec thd(1000, 1) < 0.5 %
+VIN in 0 DC 0 AC 1
+VCC vcc 0 DC 9
+* input coupling and 4.5 V bias
+RPD in 0 1meg
+CIN in a 1u
+RB a vref 100k
+RREF1 vcc vref 10k
+RREF2 vref 0 10k
+CREF vref 0 47u
+* the filter: equal resistors, C1 = 2.2 x C2 sets Q close to 0.707
+R1 a b 10k
+R2 b c 10k
+C1 b fo 22n
+C2 c 0 10n
+XU1 c fo vcc 0 fo TL072
+COUT fo out 1u
+RL out 0 100k
+.end

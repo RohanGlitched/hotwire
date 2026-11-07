@@ -1,0 +1,22 @@
+*@ title 9 V power filter with polarity protection and LED
+* Pedal power entry: a series Schottky blocks a reversed adapter, an RC filter knocks down adapter ripple (VIN models the ripple riding on the 9 V), a red LED shows power and a resistor stands in for the pedal's ~5 mA draw.
+*@ in VIN
+*@ out out
+*@ supply VCC
+*@ rating C1 16V
+*@ spec v(out) in 8.3..8.9 V
+*@ spec gain_db(100) < -20 dB
+*@ spec gain_db(1000) < -38 dB
+*@ spec i(D2) in 1m..2.5m A
+*@ spec supply_current < 10mA
+*@ spec p(R1) < 0.125 W
+VCC raw 0 DC 9
+VIN in raw DC 0 AC 1
+D1 in a 1N5817
+R1 a out 47
+C1 out 0 470u
+C2 out 0 100n
+RLED out l 4.7k
+D2 l 0 LED_RED
+RLOAD out 0 1.8k
+.end

@@ -1,0 +1,29 @@
+Op-amp gain stage with diode clipper
+
+1. Cut a piece of stripboard 17 holes wide by 11 strips (1.7 x 1.1 in), strips running left to right. Strips are lettered A to K from the top and holes numbered 1 to 17 from the left, so hole C12 is strip C, hole 12. The layout is drawn from the component side.
+2. Cut the copper at 8 holes: B4, B8, C8, C12, D8, E8, E12, I9. On the copper side left and right are mirrored, so count from the same corner. Twist a 3.5 mm drill bit by hand until the copper ring is gone, then hold the board to a light to make sure no sliver bridges the cut.
+3. Fit 6 wire links (insulated solid-core wire, lying flat): F6 to B6, I5 to C5, K4 to E4, A11 to B11, C11 to D11, G11 to E11.
+4. R3 1M resistor (brown black green gold) from hole D1 to hole G1.
+5. R1 10k resistor (brown black orange gold) from hole A3 to hole G3.
+6. R7 100k resistor (brown black yellow gold) from hole H3 to hole K3.
+7. R4 4.7k resistor (yellow violet red gold) from hole I8 to hole I11 lying along the strip over the cut.
+8. R2 10k resistor (brown black orange gold) from hole G13 to hole K13.
+9. R5 1k resistor (brown black red gold) from hole F13 to hole C13.
+10. R6 1k resistor (brown black red gold) from hole J15 to hole E15.
+11. D1 1N4148 diode: anode at hole E14, cathode at hole K14. Polarity check: the band goes at hole K14.
+12. D2 1N4148 diode: anode at hole K16, cathode at hole E16. Polarity check: the band goes at hole E16.
+13. U1 8-pin DIP socket with pin 1 at hole B7, notch toward the top of the board. The chip goes in last.
+14. C4 100pF ceramic capacitor from hole F2 to hole I2.
+15. C2 100nF film capacitor from hole B2 to hole D2.
+16. C1 47µF electrolytic, 16 V or more: + at hole G7, - at hole K7. Polarity check: the stripe (-) faces hole K7.
+17. C5 1µF electrolytic, 16 V or more: + at hole F12, - at hole J12. Polarity check: the stripe (-) faces hole J12.
+18. C3 1µF electrolytic, 16 V or more: + at hole I17, - at hole K17. Polarity check: the stripe (-) faces hole K17.
+19. C6 1µF electrolytic, 16 V or more: + at hole H17, - at hole E17. Polarity check: the stripe (-) faces hole E17.
+20. Off-board wiring, stranded wire about 10 cm long: GND pad at hole K1 to the jack sleeves and the DC jack ground; +9V pad at hole A1 to the DC jack + (the sleeve lug on a 2.1 mm centre-negative jack) or the battery clip +; IN pad at hole B1 to the input jack tip (through the footswitch for true bypass); OUT pad at hole H10 to the output jack tip (through the footswitch for true bypass); RV1 Gain pot (A500k, shaft toward you, lugs down, lug 1 on the left): lug 1 to C14, lug 2 to I1, lug 3 to I1.
+21. Before power: with a meter on ohms, check for shorts between +9V (A1) and GND (K1). It must not read near 0 ohms. Then check the neighbouring strips at every cut for solder bridges.
+22. Fit the chip: TL072 into the U1 socket, notch matching. Power up and measure the supply at the V+ pin (U1 pin 8) before playing.
+
+Notes:
+- RV1 lugs 2 and 3 share a net: join them on the pot with a short wire and run one wire to the RV1·2+3 pad.
+- C6 sits with almost no DC across it, so its polarity hardly matters; the layout puts + toward out.
+- Only one half of U1 (TL072) is used, so the spare half is tied off safely: pin 5 (IN+ B) to vref and pin 7 (OUT B) to pin 6 (IN- B) with a link, making it an idle follower.

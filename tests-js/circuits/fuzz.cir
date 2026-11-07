@@ -1,0 +1,16 @@
+*@ title Silicon fuzz face
+*@ in VIN
+*@ out out
+*@ supply VCC
+*@ pot RV1 e2 fw 0 1k taper=lin pos=0.8 label="Fuzz"
+*@ pot RV2 0 out vo 500k taper=log pos=0.6 label="Volume"
+VCC vcc 0 DC 9
+VIN in 0 DC 0 AC 1
+C1 in b1 2.2u
+Q1 c1 b1 0 BC549C
+Q2 c2 c1 e2 BC549C
+R1 vcc c1 33k
+R2 vcc c2 8.2k
+R3 e2 b1 100k
+C2 fw 0 22u
+C3 c2 vo 10n

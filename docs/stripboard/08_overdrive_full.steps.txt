@@ -1,0 +1,40 @@
+Full overdrive pedal board
+
+1. Cut a piece of stripboard 27 holes wide by 14 strips (2.7 x 1.4 in), strips running left to right. Strips are lettered A to N from the top and holes numbered 1 to 27 from the left, so hole C12 is strip C, hole 12. The layout is drawn from the component side.
+2. Cut the copper at 12 holes: F16, G7, H7, J9, K12, K17, L12, L17, L22, M17, N17, N21. On the copper side left and right are mirrored, so count from the same corner. Twist a 3.5 mm drill bit by hand until the copper ring is gone, then hold the board to a light to make sure no sliver bridges the cut.
+3. Fit 8 wire links (insulated solid-core wire, lying flat): B2 to H2, L9 to I9, N11 to J11, D15 to K15, A14 to L14, I20 to K20, E21 to L21, L20 to M20.
+4. R4 1M resistor (brown black green gold) from hole G4 to hole N4.
+5. R5 510k resistor (green brown yellow gold) from hole J5 to hole F5.
+6. R1 10k resistor (brown black orange gold) from hole L6 to hole F6.
+7. R6 10k resistor (brown black orange gold) from hole K10 to hole N10.
+8. R2 10k resistor (brown black orange gold) from hole F12 to hole J12.
+9. R7 510k resistor (green brown yellow gold) from hole M13 to hole F13.
+10. R9 51k resistor (green brown orange gold) from hole D18 to hole G18.
+11. R8 4.7k resistor (yellow violet red gold) from hole A20 to hole F20.
+12. R11 1k resistor (brown black red gold) from hole N23 to hole N20 lying along the strip over the cut.
+13. R10 1k resistor (brown black red gold) from hole D23 to hole H23.
+14. R12 100k resistor (brown black yellow gold) from hole C25 to hole J25.
+15. R3 4.7k resistor (yellow violet red gold) from hole I27 to hole L27.
+16. D1 1N5817 diode: anode at hole H1, cathode at hole L1. Polarity check: the band goes at hole L1.
+17. D4 1N4148 diode: anode at hole A12, cathode at hole D12. Polarity check: the band goes at hole D12.
+18. D3 1N4148 diode: anode at hole D17, cathode at hole A17. Polarity check: the band goes at hole A17.
+19. U1 8-pin DIP socket with pin 1 at hole K16, notch toward the top of the board. The chip goes in last.
+20. C7 51pF ceramic capacitor from hole D16 to hole A16.
+21. C2 100nF film capacitor from hole L2 to hole N2.
+22. C4 22nF film capacitor from hole G3 to hole J3.
+23. C8 220nF film capacitor from hole H22 to hole J22.
+24. C6 47nF film capacitor from hole F24 to hole J24.
+25. C9 100nF film capacitor from hole N26 to hole J26.
+26. Q1 2N5088 (TO-92, pins EBC left to right): E at K8, B at J8, C at I8. Polarity check: flat face toward the right.
+27. C1 100µF electrolytic, 16 V or more: + at hole L3, - at hole N3. Polarity check: the stripe (-) faces hole N3.
+28. C5 1µF electrolytic, 16 V or more: + at hole M5, - at hole K5. Polarity check: the stripe (-) faces hole K5.
+29. C3 47µF electrolytic, 16 V or more: + at hole F10, - at hole J10. Polarity check: the stripe (-) faces hole J10.
+30. C10 10µF electrolytic, 16 V or more: + at hole E13, - at hole C13. Polarity check: the stripe (-) faces hole C13.
+31. D2 red LED: anode (long leg) at hole L23, cathode (short leg, flat side) at hole J23. Polarity check: flat side toward hole J23.
+32. Off-board wiring, stranded wire about 10 cm long: GND pad at hole N1 to the jack sleeves and the DC jack ground; +9V pad at hole B1 to the DC jack + (the sleeve lug on a 2.1 mm centre-negative jack) or the battery clip +; IN pad at hole G1 to the input jack tip (through the footswitch for true bypass); RV1 Drive pot (A500k, shaft toward you, lugs down, lug 1 on the left): lug 1 to G19, lug 2 to A22, lug 3 to A22; RV2 Tone pot (B20k, shaft toward you, lugs down, lug 1 on the left): lug 1 to H18, lug 2 to N24, lug 3 to F8; RV3 Level pot (A100k, shaft toward you, lugs down, lug 1 on the left): lug 1 to C5, lug 2 to the output jack tip, lug 3 to N5.
+33. Before power: with a meter on ohms, check for shorts between +9V (B1) and GND (N1). It must not read near 0 ohms. Then check the neighbouring strips at every cut for solder bridges.
+34. Fit the chip: TL072 into the U1 socket, notch matching. Power up and measure the supply at the V+ pin (U1 pin 8) before playing.
+
+Notes:
+- RV1 lugs 2 and 3 share a net: join them on the pot with a short wire and run one wire to the RV1·2+3 pad.
+- Nothing on the board touches net out: wire the output jack tip and RV3 lug 2 straight to each other.

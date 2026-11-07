@@ -1,0 +1,9 @@
+*@ title MOSFET LED switch
+*@ in VIN
+*@ out d
+*@ supply VCC
+VCC vcc 0 DC 9
+VIN g 0 DC 2.3
+RL vcc a 330
+D1 a d LED_RED
+M1 d g 0 2N7000

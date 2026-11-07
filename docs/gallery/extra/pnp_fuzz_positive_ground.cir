@@ -1,0 +1,19 @@
+*@ title PNP germanium fuzz, positive ground
+* The vintage wiring: AC128 PNPs with the battery's positive terminal on ground and the collectors fed from -9 V.
+*@ in VIN
+*@ out out
+*@ supply VB
+*@ pot RV1 e2 fw 0 1k taper=lin pos=0.8 label="Fuzz"
+*@ pot RV2 o out 0 500k taper=log pos=0.5 label="Volume"
+VIN in 0 DC 0 AC 1
+VB 0 vneg DC 9
+C1 in b1 2.2u
+Q1 c1 b1 0 AC128
+R1 c1 vneg 33k
+Q2 c2 c1 e2 AC128
+RF e2 b1 100k
+CF fw 0 22u
+R3 c2 r34 470
+R4 r34 vneg 8.2k
+C3 c2 o 10n
+.end

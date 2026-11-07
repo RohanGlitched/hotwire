@@ -1,0 +1,20 @@
+* RLC band-pass: resistor feeding a parallel LC tank (f0 about 5 kHz) (generated for the Hotwire cross-check)
+VIN in 0 DC 0 AC 1 SIN(0 0.5 5000 0 0)
+R1 in out 1000
+L1 out m 0.01
+RL m 0 10
+C1 out 0 1e-07
+.options rshunt=1e12 reltol=1e-6 abstol=1e-15 vntol=1e-9 itl1=500 itl4=200
+.control
+set wr_singlescale
+set wr_vecnames
+option numdgt=12
+op
+wrdata <repo>/tests/_ngspice/rlc_bandpass/op.txt v(in) v(out) v(m)
+ac dec 40 100 100000
+wrdata <repo>/tests/_ngspice/rlc_bandpass/ac.txt v(out)
+tran 1e-06 0.002 0 1e-06
+linearize v(in) v(out) v(m)
+wrdata <repo>/tests/_ngspice/rlc_bandpass/tran.txt v(in) v(out) v(m)
+.endc
+.end

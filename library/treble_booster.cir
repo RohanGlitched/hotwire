@@ -1,0 +1,23 @@
+*@ title Germanium treble booster
+* Single AC128 germanium PNP common-emitter stage (negative-ground wiring) with a small 4.7n input cap: cuts the lows and adds over 30 dB in the upper mids and treble, meant to push an already loud amp into bright, cutting overdrive.
+*@ in VIN
+*@ out out
+*@ supply VCC
+*@ pot RV1 0 w c 10k taper=log pos=1 label="Boost"
+*@ spec gain_db(100) < 10 dB
+*@ spec gain_db(5000) > 25 dB
+*@ spec v(c) in 1.5..4 V
+*@ spec region(Q1) == active
+*@ spec supply_current < 1mA
+VIN in 0 DC 0 AC 1
+VCC vcc 0 DC 9
+RPD in 0 1meg
+C1 in b 4.7n
+RB1 vcc b 68k
+RB2 b 0 470k
+Q1 c b e AC128
+RE vcc e 3.9k
+CE vcc e 47u
+C2 w out 10n
+RL out 0 1meg
+.end

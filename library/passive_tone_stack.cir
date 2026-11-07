@@ -1,0 +1,17 @@
+*@ title Three-knob passive amp tone stack
+* The classic bass/middle/treble passive network from tube amps, driven from a low-impedance stage into a 1 M grid load: the well-known mid scoop at noon, with Bass, Middle and Treble all interacting.
+*@ in VIN
+*@ out out
+*@ pot RVT b1 out t 250k taper=log pos=0.5 label="Treble"
+*@ pot RVB b1 m m 1meg taper=log pos=0.5 label="Bass"
+*@ pot RVM m 0 0 25k taper=lin pos=0.5 label="Middle"
+*@ spec gain_db(100) in -5..-1 dB
+*@ spec gain_db(1000) < -7 dB
+*@ spec gain_db(5000) in -10..-4 dB
+VIN in 0 DC 0 AC 1
+C1 in t 470p
+R1 in n 33k
+C2 n b1 22n
+C3 n m 22n
+RL out 0 1meg
+.end

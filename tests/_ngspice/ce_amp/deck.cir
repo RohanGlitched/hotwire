@@ -1,0 +1,27 @@
+* Common-emitter amplifier, bypassed emitter (2N3904, full GP terms) (generated for the Hotwire cross-check)
+VCC vcc 0 DC 9
+VIN in 0 DC 0 AC 1 SIN(0 0.02 1000 0 0)
+C1 in b 1e-06
+R1 vcc b 100000
+R2 b 0 22000
+RC vcc c 4700
+RE e 0 1000
+CE e 0 0.0001
+Q1 c b e Q2N3904
+C2 c out 1e-06
+RL out 0 100000
+.model Q2N3904 NPN(IS=6.734e-15 BF=416.4 BR=0.7371 NF=1 NR=1 VAF=74.03 IKF=0.06678 ISE=6.734e-15 NE=1.259 RB=10 RC=1 CJE=4.493e-12 MJE=0.2593 VJE=0.75 CJC=3.638e-12 MJC=0.3085 VJC=0.75 TF=3.012e-10 TR=2.395e-07)
+.options rshunt=1e12 reltol=1e-6 abstol=1e-15 vntol=1e-9 itl1=500 itl4=200
+.control
+set wr_singlescale
+set wr_vecnames
+option numdgt=12
+op
+wrdata <repo>/tests/_ngspice/ce_amp/op.txt v(vcc) v(in) v(b) v(c) v(e) v(out)
+ac dec 20 10 1000000
+wrdata <repo>/tests/_ngspice/ce_amp/ac.txt v(out)
+tran 5e-06 0.005 0 5e-06
+linearize v(vcc) v(in) v(b) v(c) v(e) v(out)
+wrdata <repo>/tests/_ngspice/ce_amp/tran.txt v(vcc) v(in) v(b) v(c) v(e) v(out)
+.endc
+.end

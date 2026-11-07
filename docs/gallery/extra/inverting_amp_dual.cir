@@ -1,0 +1,14 @@
+*@ title Inverting op-amp stage, dual supply
+* Gain of -10 with a 10 kHz roll-off cap across the feedback resistor, powered from +/-15 V.
+*@ in VIN
+*@ out out
+*@ supply VP VN
+VIN in 0 DC 0 AC 1
+VP vp 0 DC 15
+VN vn 0 DC -15
+RIN in n 10k
+RF n out 100k
+CF n out 150p
+XU1 0 n vp vn out TL072
+RL out 0 10k
+.end

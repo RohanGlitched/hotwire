@@ -1,0 +1,41 @@
+*@ title Octave-up rectifier fuzz
+* Gain stage into a transistor phase splitter whose two opposite-phase outputs are full-wave rectified by germanium diodes: the fundamental largely cancels and a ringing octave-up appears, strongest on single notes high on the neck.
+*@ in VIN
+*@ out out
+*@ supply VCC
+*@ pot RV1 0 out sv 100k taper=log pos=0.9 label="Level"
+*@ spec thd(500, 0.2) > 100 %
+*@ spec v(c2) in 5.5..8 V
+*@ spec v(e2) in 1.5..3 V
+*@ spec region(Q1) == active
+*@ spec region(Q2) == active
+*@ spec supply_current < 3mA
+VIN in 0 DC 0 AC 1
+VCC vcc 0 DC 9
+RPD in 0 1meg
+C1 in b1 1u
+RB1 vcc b1 100k
+RB2 b1 0 22k
+Q1 c1 b1 e1 2N3904
+RC1 vcc c1 4.7k
+RE1 e1 e1b 470
+RE1B e1b 0 470
+CE1 e1b 0 47u
+* phase splitter: equal collector and emitter loads give two opposite-phase copies
+C2 c1 b2 1u
+RB3 vcc b2 47k
+RB4 b2 0 22k
+Q2 c2 b2 e2 2N3904
+RC2 vcc c2 4.7k
+RE2 e2 0 4.7k
+* full-wave rectifier; RBAL matches the emitter side to the 4.7k collector impedance
+C3 c2 da 1u
+C4 e2 eb 1u
+RBAL eb db 4.7k
+RA da 0 100k
+RBB db 0 100k
+D1 da s 1N34A
+D2 db s 1N34A
+RS s 0 22k
+C5 s sv 1u
+.end

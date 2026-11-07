@@ -1,0 +1,19 @@
+*@ title Two-transistor fuzz
+* Silicon NPN fuzz in the classic two-transistor feedback pair, with Fuzz and Volume pots.
+*@ in VIN
+*@ out out
+*@ supply VCC
+*@ pot RV1 e2 fw 0 1k taper=lin label="Fuzz"
+*@ pot RV2 vt out 0 500k taper=log label="Volume"
+VCC vcc 0 DC 9
+VIN in 0 DC 0 AC 1
+C1 in b1 2.2u
+Q1 c1 b1 0 BC549C
+R1 vcc c1 33k
+Q2 c2 c1 e2 BC549C
+R2 e2 b1 100k
+R3 vcc n3 470
+R4 n3 c2 8.2k
+C2 fw 0 22u
+C3 c2 vt 10n
+.end

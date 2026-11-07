@@ -1,0 +1,27 @@
+* Germanium PNP common-emitter stage on a negative supply (generated for the Hotwire cross-check)
+VNEG vneg 0 DC -9
+VIN in 0 DC 0 AC 1 SIN(0 0.01 1000 0 0)
+C1 in b 1e-05
+R1 b vneg 68000
+R2 b 0 10000
+RC c vneg 3300
+RE e 0 1000
+CE e 0 4.7e-05
+Q1 c b e AC128
+C2 c out 1e-05
+RL out 0 100000
+.model AC128 PNP(IS=5e-06 BF=90 BR=4 NF=1.15 NR=1.15 VAF=40 RB=200 CJE=4e-11 CJC=2.5e-11)
+.options rshunt=1e12 reltol=1e-6 abstol=1e-15 vntol=1e-9 itl1=500 itl4=200
+.control
+set wr_singlescale
+set wr_vecnames
+option numdgt=12
+op
+wrdata <repo>/tests/_ngspice/germanium_pnp_stage/op.txt v(vneg) v(in) v(b) v(c) v(e) v(out)
+ac dec 20 10 1000000
+wrdata <repo>/tests/_ngspice/germanium_pnp_stage/ac.txt v(out)
+tran 5e-06 0.005 0 5e-06
+linearize v(vneg) v(in) v(b) v(c) v(e) v(out)
+wrdata <repo>/tests/_ngspice/germanium_pnp_stage/tran.txt v(vneg) v(in) v(b) v(c) v(e) v(out)
+.endc
+.end

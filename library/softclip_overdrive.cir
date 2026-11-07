@@ -1,0 +1,41 @@
+*@ title Op-amp soft-clip overdrive
+* Non-inverting op-amp with antiparallel diodes in the feedback loop: smooth, compressed overdrive with a mid hump (lows cut below about 720 Hz before clipping) and an active treble tone control; up to about 40 dB of gain.
+*@ in VIN
+*@ out out
+*@ supply VCC
+*@ pot RV1 f n n 500k taper=log pos=0.5 label="Drive"
+*@ pot RV2 ta tw tb 20k taper=lin pos=0.5 label="Tone"
+*@ pot RV3 0 out c 100k taper=log pos=0.7 label="Level"
+*@ spec gain_db(1000) in 14..22 dB
+*@ spec gain_db(100) < 10 dB
+*@ spec v(o1) in 4.3..4.7 V
+*@ spec v(o2) in 4.3..4.7 V
+*@ spec thd(1000, 0.2) > 5 %
+*@ spec vout_peak(1000, 0.2) < 1 V
+*@ spec supply_current < 5mA
+VIN in 0 DC 0 AC 1
+VCC vcc 0 DC 9
+RPD in 0 1meg
+C1 in p 22n
+RB p vref 1meg
+RREF1 vcc vref 10k
+RREF2 vref 0 10k
+CREF vref 0 47u
+* clipping stage: gain 1 + (51k + Drive) / (4.7k + 47n); the diodes soft-limit the swing
+XU1 p n vcc 0 o1 RC4558
+RF1 o1 f 51k
+CF o1 n 51p
+D1 o1 n 1N914
+D2 n o1 1N914
+RG n g 4.7k
+CG g vref 47n
+* fixed treble cut, then the active tone stage (the wiper shunts either the input or the feedback leg)
+R7 o1 t1 1k
+C5 t1 vref 220n
+R8 t1 ta 220
+C6 tw vref 220n
+R9 tb n2 1k
+XU2 t1 n2 vcc 0 o2 RC4558
+R11 o2 n2 1k
+C7 o2 c 1u
+.end

@@ -1,0 +1,22 @@
+* Class-B complementary emitter follower (crossover distortion) (generated for the Hotwire cross-check)
+VCC vcc 0 DC 9
+VEE vee 0 DC -9
+VIN in 0 DC 0 SIN(0 2 1000 0 0)
+RIN in b 100
+Q1 vcc b out Q2N3904
+Q2 vee b out Q2N3906
+RL out 0 1000
+.model Q2N3904 NPN(IS=6.734e-15 BF=416.4 BR=0.7371 NF=1 NR=1 VAF=74.03 IKF=0.06678 ISE=6.734e-15 NE=1.259 RB=10 RC=1 CJE=4.493e-12 MJE=0.2593 VJE=0.75 CJC=3.638e-12 MJC=0.3085 VJC=0.75 TF=3.012e-10 TR=2.395e-07)
+.model Q2N3906 PNP(IS=1.41e-15 BF=180.7 BR=4.977 NF=1 NR=1 VAF=18.7 IKF=0.08 ISE=0 RB=10 RC=2.5 CJE=8.063e-12 MJE=0.3677 VJE=0.75 CJC=4.017e-12 MJC=0.5 VJC=0.75 TF=5.133e-10 TR=3.342e-08)
+.options rshunt=1e12 reltol=1e-6 abstol=1e-15 vntol=1e-9 itl1=500 itl4=200
+.control
+set wr_singlescale
+set wr_vecnames
+option numdgt=12
+op
+wrdata <repo>/tests/_ngspice/push_pull_follower/op.txt v(vcc) v(vee) v(in) v(b) v(out)
+tran 2e-06 0.003 0 2e-06
+linearize v(vcc) v(vee) v(in) v(b) v(out)
+wrdata <repo>/tests/_ngspice/push_pull_follower/tran.txt v(vcc) v(vee) v(in) v(b) v(out)
+.endc
+.end

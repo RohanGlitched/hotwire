@@ -1,0 +1,2627 @@
+{
+ "version": 1,
+ "generated_by": "tests/test_library_ngspice.py",
+ "simulator": "ngspice-42 (batch mode, 27 C, trapezoidal)",
+ "conventions": {
+  "pot_taper": "fraction a->w: lin=pos, log=(11**pos-1)/10, revlog=1-(11**(1-pos)-1)/10; halves >= 1 ohm",
+  "ac_sweep": "1 Hz to 200000 Hz, 100 points/decade, transfer v(out)/v(in source)",
+  "f3db": "first -3 dB crossings below/above the sweep maximum; null if none inside the sweep",
+  "tran": "sine from the DC operating point with 5 ms linear fade-in, max step T/200, settle max(60 ms, 8 cycles), window max(4, round(0.02 f)) cycles",
+  "thd": "100*sqrt(H2^2+...+H15^2)/H1 (Fourier projection of the window minus its mean)",
+  "vout_peak": "max |v(out) - window mean|",
+  "headroom": "largest vin_peak with THD <= 1 %, geometric bisection 5 mV..5 V, 9 steps",
+  "supply_current": "sum of DC currents delivered by the *@ supply sources",
+  "opamp_macromodel": "RIN; VCCS A0/1Meg into 1Meg||C (pole GBW/A0); gain node clamped to [VEE+VSAT_LO, VCC-VSAT_HI] by a 1000 S softplus clamp (10 mV); unity VCVS + ROUT; IQ from VCC to VEE"
+ },
+ "circuits": [
+  {
+   "id": "baxandall_tone",
+   "file": "library/baxandall_tone.cir",
+   "title": "Baxandall active bass and treble control",
+   "description": "Inverting op-amp with the classic Baxandall feedback network: flat with both knobs at noon, then up to about 15 dB of boost or cut in the lows and highs; listen to how the shelves leave the mids alone.",
+   "category": "tone",
+   "tags": [
+    "op-amp",
+    "active",
+    "tone-control",
+    "bass-treble"
+   ],
+   "input": "VIN",
+   "output": "out",
+   "supplies": [
+    "VCC"
+   ],
+   "pots": [
+    {
+     "name": "RVB",
+     "a": "bb",
+     "w": "bw",
+     "b": "ba",
+     "value": 100000.0,
+     "taper": "lin",
+     "pos": 0.5,
+     "label": "Bass"
+    },
+    {
+     "name": "RVT",
+     "a": "tb",
+     "w": "tw",
+     "b": "ta",
+     "value": 100000.0,
+     "taper": "lin",
+     "pos": 0.5,
+     "label": "Treble"
+    }
+   ],
+   "specs": [
+    {
+     "spec": "gain_db(1000) in -1..1 dB",
+     "measured": -0.00718724,
+     "pass": true,
+     "margin": 0.992813,
+     "unit": "dB"
+    },
+    {
+     "spec": "gain_db(50) in -2..2 dB",
+     "measured": -0.0176377,
+     "pass": true,
+     "margin": 1.98236,
+     "unit": "dB"
+    },
+    {
+     "spec": "gain_db(15000) in -2..2 dB",
+     "measured": -0.000289159,
+     "pass": true,
+     "margin": 1.99971,
+     "unit": "dB"
+    },
+    {
+     "spec": "v(o) in 4.3..4.7 V",
+     "measured": 4.49994,
+     "pass": true,
+     "margin": 0.199944,
+     "unit": "V"
+    },
+    {
+     "spec": "thd(1000, 0.5) < 0.1 %",
+     "measured": 3.68093e-05,
+     "pass": true,
+     "margin": 0.0999632,
+     "unit": "%"
+    },
+    {
+     "spec": "supply_current < 12mA",
+     "measured": 0.00445,
+     "pass": true,
+     "margin": 0.00755,
+     "unit": "A"
+    }
+   ],
+   "measured": {
+    "op": {
+     "nodes": {
+      "ba": 4.49995,
+      "bb": 4.49995,
+      "bw": 4.49995,
+      "i": 4.49995,
+      "in": 0.0,
+      "n": 4.49995,
+      "o": 4.49994,
+      "out": 0.0,
+      "ta": 4.49995,
+      "tb": 4.49995,
+      "tw": 4.49995,
+      "vcc": 9.0,
+      "vref": 4.5
+     },
+     "devices": {
+      "XU1": {
+       "vout": 4.49994,
+       "saturated": false
+      }
+     },
+     "supply_current_a": 0.00445
+    },
+    "ac": {
+     "gain_db": {
+      "100": -0.01732,
+      "1000": -0.0071872,
+      "5000": -0.0006619
+     },
+     "phase_deg": {
+      "100": -179.74,
+      "1000": -179.93,
+      "5000": -180.04
+     },
+     "peak_db": -0.00028853,
+     "f_peak_hz": 15879.0,
+     "f3db_low_hz": null,
+     "f3db_high_hz": null
+    },
+    "tran": [
+     {
+      "f_hz": 1000.0,
+      "vin_peak": 0.5,
+      "thd_pct": 3.6809e-05,
+      "vout_peak": 0.49958,
+      "gain_tran_db": -0.0072525,
+      "h2_over_h1": 3.8989e-11,
+      "tstop_s": 0.08,
+      "window_cycles": 20
+     }
+    ],
+    "pot_sweep": {
+     "RVB": {
+      "0": {
+       "gain_db_100": -13.799,
+       "gain_db_1k": -1.0134,
+       "gain_db_10k": -0.010347,
+       "peak_db": -0.00011071,
+       "f_peak_hz": 49081.0
+      },
+      "1": {
+       "gain_db_100": 13.778,
+       "gain_db_1k": 1.0034,
+       "gain_db_10k": 0.009788,
+       "peak_db": 20.581,
+       "f_peak_hz": 8.9163
+      }
+     },
+     "RVT": {
+      "0": {
+       "gain_db_100": 0.28922,
+       "gain_db_1k": -1.6057,
+       "gain_db_10k": -15.559,
+       "peak_db": 0.39387,
+       "f_peak_hz": 182.15
+      },
+      "1": {
+       "gain_db_100": -0.3237,
+       "gain_db_1k": 1.5897,
+       "gain_db_10k": 15.59,
+       "peak_db": 20.051,
+       "f_peak_hz": 109900.0
+      }
+     }
+    }
+   },
+   "all_specs_pass": true
+  },
+  {
+   "id": "ce_amplifier",
+   "file": "library/ce_amplifier.cir",
+   "title": "Common-emitter amplifier with emitter degeneration",
+   "description": "Single 2N3904 voltage amplifier, gain about 19x (25 dB) set by Rc over the unbypassed emitter resistor; clean and slightly warm until the collector runs out of swing.",
+   "category": "amp",
+   "tags": [
+    "textbook",
+    "bjt",
+    "common-emitter",
+    "degeneration"
+   ],
+   "input": "VIN",
+   "output": "out",
+   "supplies": [
+    "VCC"
+   ],
+   "pots": [],
+   "specs": [
+    {
+     "spec": "gain_db(1000) in 24..27 dB",
+     "measured": 24.9288,
+     "pass": true,
+     "margin": 0.928779,
+     "unit": "dB"
+    },
+    {
+     "spec": "f3db_low < 40 Hz",
+     "measured": 27.2194,
+     "pass": true,
+     "margin": 12.7806,
+     "unit": "Hz"
+    },
+    {
+     "spec": "gain_db(20000) > 24 dB",
+     "measured": 24.9318,
+     "pass": true,
+     "margin": 0.931806,
+     "unit": "dB"
+    },
+    {
+     "spec": "v(c) in 4..5.5 V",
+     "measured": 5.09279,
+     "pass": true,
+     "margin": 0.407209,
+     "unit": "V"
+    },
+    {
+     "spec": "region(Q1) == active",
+     "measured": "active",
+     "target": "active",
+     "pass": true,
+     "unit": ""
+    },
+    {
+     "spec": "thd(1000, 0.05) < 2 %",
+     "measured": 0.733927,
+     "pass": true,
+     "margin": 1.26607,
+     "unit": "%"
+    },
+    {
+     "spec": "headroom(1000) > 0.05 V",
+     "measured": 0.0666761,
+     "pass": true,
+     "margin": 0.0166761,
+     "unit": "V"
+    },
+    {
+     "spec": "supply_current < 2mA",
+     "measured": 0.000990254,
+     "pass": true,
+     "margin": 0.00100975,
+     "unit": "A"
+    }
+   ],
+   "measured": {
+    "op": {
+     "nodes": {
+      "b": 1.53014,
+      "c": 5.09279,
+      "e": 0.87073,
+      "e2": 0.686537,
+      "in": 0.0,
+      "out": 0.0,
+      "vcc": 9.0
+     },
+     "devices": {
+      "Q1": {
+       "type": "NPN",
+       "ic": 0.000831333,
+       "ib": 5.91918e-06,
+       "vbe": 0.659411,
+       "vbc": -3.56265,
+       "vce": 4.22206,
+       "region": "active"
+      }
+     },
+     "supply_current_a": 0.000990254
+    },
+    "ac": {
+     "gain_db": {
+      "100": 24.637,
+      "1000": 24.929,
+      "5000": 24.932
+     },
+     "phase_deg": {
+      "100": -162.09,
+      "1000": -178.18,
+      "5000": -179.65
+     },
+     "peak_db": 24.932,
+     "f_peak_hz": 20457.0,
+     "f3db_low_hz": 27.219,
+     "f3db_high_hz": null
+    },
+    "tran": [
+     {
+      "f_hz": 1000.0,
+      "vin_peak": 0.005,
+      "thd_pct": 0.071668,
+      "vout_peak": 0.088245,
+      "gain_tran_db": 24.934,
+      "h2_over_h1": 0.00071666,
+      "tstop_s": 0.08,
+      "window_cycles": 20
+     },
+     {
+      "f_hz": 1000.0,
+      "vin_peak": 0.028117066259517456,
+      "thd_pct": 0.40597,
+      "vout_peak": 0.49761,
+      "gain_tran_db": 24.958,
+      "h2_over_h1": 0.0040569,
+      "tstop_s": 0.08,
+      "window_cycles": 20
+     },
+     {
+      "f_hz": 1000.0,
+      "vin_peak": 0.05,
+      "thd_pct": 0.73393,
+      "vout_peak": 0.88657,
+      "gain_tran_db": 24.975,
+      "h2_over_h1": 0.0073234,
+      "tstop_s": 0.08,
+      "window_cycles": 20
+     },
+     {
+      "f_hz": 1000.0,
+      "vin_peak": 0.0666760716081662,
+      "thd_pct": 0.99758,
+      "vout_peak": 1.1834,
+      "gain_tran_db": 24.984,
+      "h2_over_h1": 0.0099371,
+      "tstop_s": 0.08,
+      "window_cycles": 20
+     },
+     {
+      "f_hz": 1000.0,
+      "vin_peak": 0.06758174157901163,
+      "thd_pct": 1.0124,
+      "vout_peak": 1.1996,
+      "gain_tran_db": 24.984,
+      "h2_over_h1": 0.010083,
+      "tstop_s": 0.08,
+      "window_cycles": 20
+     },
+     {
+      "f_hz": 1000.0,
+      "vin_peak": 0.06849971338582772,
+      "thd_pct": 1.0274,
+      "vout_peak": 1.2159,
+      "gain_tran_db": 24.984,
+      "h2_over_h1": 0.010232,
+      "tstop_s": 0.08,
+      "window_cycles": 20
+     },
+     {
+      "f_hz": 1000.0,
+      "vin_peak": 0.07037323316699216,
+      "thd_pct": 1.0582,
+      "vout_peak": 1.2493,
+      "gain_tran_db": 24.985,
+      "h2_over_h1": 0.010536,
+      "tstop_s": 0.08,
+      "window_cycles": 20
+     },
+     {
+      "f_hz": 1000.0,
+      "vin_peak": 0.07427540085863875,
+      "thd_pct": 1.1232,
+      "vout_peak": 1.3188,
+      "gain_tran_db": 24.986,
+      "h2_over_h1": 0.011178,
+      "tstop_s": 0.08,
+      "window_cycles": 20
+     },
+     {
+      "f_hz": 1000.0,
+      "vin_peak": 0.08274085499715908,
+      "thd_pct": 1.2681,
+      "vout_peak": 1.4695,
+      "gain_tran_db": 24.989,
+      "h2_over_h1": 0.012604,
+      "tstop_s": 0.08,
+      "window_cycles": 20
+     },
+     {
+      "f_hz": 1000.0,
+      "vin_peak": 0.1026762513228573,
+      "thd_pct": 1.6349,
+      "vout_peak": 1.824,
+      "gain_tran_db": 24.991,
+      "h2_over_h1": 0.016193,
+      "tstop_s": 0.08,
+      "window_cycles": 20
+     },
+     {
+      "f_hz": 1000.0,
+      "vin_peak": 0.15811388300841897,
+      "thd_pct": 2.9659,
+      "vout_peak": 2.8012,
+      "gain_tran_db": 24.967,
+      "h2_over_h1": 0.028926,
+      "tstop_s": 0.08,
+      "window_cycles": 20
+     },
+     {
+      "f_hz": 1000.0,
+      "vin_peak": 5.0,
+      "thd_pct": 100.62,
+      "vout_peak": 6.2041,
+      "gain_tran_db": 1.8742,
+      "h2_over_h1": 0.77139,
+      "tstop_s": 0.08,
+      "window_cycles": 20
+     }
+    ]
+   },
+   "all_specs_pass": true
+  },
+  {
+   "id": "diode_hard_clipper",
+   "file": "library/diode_hard_clipper.cir",
+   "title": "Silicon diode hard clipper",
+   "description": "Non-inverting op-amp gain stage (up to 46 dB) into a pair of 1N4148 diodes to ground: buzzy, aggressive distortion that squares off near 0.6 V; listen for the raspy top end and the sustain at high Distortion.",
+   "category": "drive",
+   "tags": [
+    "op-amp",
+    "distortion",
+    "hard-clip",
+    "silicon-diodes",
+    "pedal"
+   ],
+   "input": "VIN",
+   "output": "out",
+   "supplies": [
+    "VCC"
+   ],
+   "pots": [
+    {
+     "name": "RV1",
+     "a": "y",
+     "w": "y",
+     "b": "x",
+     "value": 1000000.0,
+     "taper": "revlog",
+     "pos": 0.7,
+     "label": "Distortion"
+    },
+    {
+     "name": "RV2",
+     "a": "0",
+     "w": "out",
+     "b": "clip",
+     "value": 100000.0,
+     "taper": "log",
+     "pos": 0.7,
+     "label": "Level"
+    }
+   ],
+   "specs": [
+    {
+     "spec": "gain_db(1000) in 10..16 dB",
+     "measured": 11.9997,
+     "pass": true,
+     "margin": 1.99968,
+     "unit": "dB"
+    },
+    {
+     "spec": "f3db_low < 60 Hz",
+     "measured": 36.8668,
+     "pass": true,
+     "margin": 23.1332,
+     "unit": "Hz"
+    },
+    {
+     "spec": "v(o) in 4.3..4.7 V",
+     "measured": 4.49998,
+     "pass": true,
+     "margin": 0.199978,
+     "unit": "V"
+    },
+    {
+     "spec": "thd(1000, 0.2) > 15 %",
+     "measured": 27.9757,
+     "pass": true,
+     "margin": 12.9757,
+     "unit": "%"
+    },
+    {
+     "spec": "vout_peak(1000, 0.2) < 0.5 V",
+     "measured": 0.216725,
+     "pass": true,
+     "margin": 0.283275,
+     "unit": "V"
+    },
+    {
+     "spec": "supply_current < 3mA",
+     "measured": 0.00185,
+     "pass": true,
+     "margin": 0.00115,
+     "unit": "A"
+    }
+   ],
+   "measured": {
+    "op": {
+     "nodes": {
+      "c": 5.74184e-21,
+      "clip": 5.74184e-21,
+      "in": 0.0,
+      "n": 4.49998,
+      "o": 4.49998,
+      "out": 2.5021e-21,
+      "p": 4.5,
+      "vcc": 9.0,
+      "vref": 4.5,
+      "x": 4.49998,
+      "y": 4.49998
+     },
+     "devices": {
+      "XU1": {
+       "vout": 4.49998,
+       "saturated": false
+      },
+      "D1": {
+       "id": 6.10282e-32,
+       "vd": 5.74184e-21
+      },
+      "D2": {
+       "id": 4.95445e-32,
+       "vd": -5.74184e-21
+      }
+     },
+     "supply_current_a": 0.00185
+    },
+    "ac": {
+     "gain_db": {
+      "100": 11.52,
+      "1000": 12.0,
+      "5000": 11.673
+     },
+     "phase_deg": {
+      "100": 24.893,
+      "1000": -0.89828,
+      "5000": -16.481
+     },
+     "peak_db": 12.002,
+     "f_peak_hz": 777.25,
+     "f3db_low_hz": 36.867,
+     "f3db_high_hz": 17375.0
+    },
+    "tran": [
+     {
+      "f_hz": 1000.0,
+      "vin_peak": 0.2,
+      "thd_pct": 27.976,
+      "vout_peak": 0.21672,
+      "gain_tran_db": 0.69757,
+      "h2_over_h1": 1.2002e-07,
+      "tstop_s": 0.08,
+      "window_cycles": 20
+     }
+    ],
+    "pot_sweep": {
+     "RV1": {
+      "0": {
+       "gain_db_100": -2.1721,
+       "gain_db_1k": -2.0741,
+       "gain_db_10k": -3.2982,
+       "peak_db": -2.0667,
+       "f_peak_hz": 537.69
+      },
+      "1": {
+       "gain_db_100": 21.208,
+       "gain_db_1k": 36.988,
+       "gain_db_10k": 35.804,
+       "peak_db": 38.403,
+       "f_peak_hz": 2822.7
+      }
+     },
+     "RV2": {
+      "0": {
+       "gain_db_100": -81.265,
+       "gain_db_1k": -80.785,
+       "gain_db_10k": -82.01,
+       "peak_db": -80.783,
+       "f_peak_hz": 777.25
+      },
+      "1": {
+       "gain_db_100": 18.735,
+       "gain_db_1k": 19.215,
+       "gain_db_10k": 17.99,
+       "peak_db": 19.217,
+       "f_peak_hz": 777.25
+      }
+     }
+    }
+   },
+   "all_specs_pass": true
+  },
+  {
+   "id": "germanium_fuzz",
+   "file": "library/germanium_fuzz.cir",
+   "title": "Two-transistor germanium fuzz",
+   "description": "The same two-stage feedback fuzz built with leaky AC128 germanium PNPs, wired negative-ground (emitters to +9 V) so it shares a standard supply: rounder and warmer than the silicon version, with a softer clip. With this pair it cleans up less when you roll the guitar volume back (about 18% THD at a quarter turn, against under 5% for the silicon one).",
+   "category": "fuzz",
+   "tags": [
+    "bjt",
+    "fuzz",
+    "germanium",
+    "two-transistor",
+    "pnp",
+    "pedal"
+   ],
+   "input": "VIN",
+   "output": "out",
+   "supplies": [
+    "VCC"
+   ],
+   "pots": [
+    {
+     "name": "RV1",
+     "a": "vcc",
+     "w": "fw",
+     "b": "e2",
+     "value": 1000.0,
+     "taper": "lin",
+     "pos": 1.0,
+     "label": "Fuzz"
+    },
+    {
+     "name": "RV2",
+     "a": "0",
+     "w": "out",
+     "b": "o",
+     "value": 500000.0,
+     "taper": "log",
+     "pos": 0.5,
+     "label": "Volume"
+    }
+   ],
+   "specs": [
+    {
+     "spec": "gain_db(1000) > 20 dB",
+     "measured": 63.0927,
+     "pass": true,
+     "margin": 43.0927,
+     "unit": "dB"
+    },
+    {
+     "spec": "v(c2) in 2.5..6 V",
+     "measured": 3.80222,
+     "pass": true,
+     "margin": 1.30222,
+     "unit": "V"
+    },
+    {
+     "spec": "region(Q1) == active",
+     "measured": "active",
+     "target": "active",
+     "pass": true,
+     "unit": ""
+    },
+    {
+     "spec": "region(Q2) == active",
+     "measured": "active",
+     "target": "active",
+     "pass": true,
+     "unit": ""
+    },
+    {
+     "spec": "thd(500, 0.1) > 15 %",
+     "measured": 94.5234,
+     "pass": true,
+     "margin": 79.5234,
+     "unit": "%"
+    },
+    {
+     "spec": "supply_current < 2mA",
+     "measured": 0.000692322,
+     "pass": true,
+     "margin": 0.00130768,
+     "unit": "A"
+    }
+   ],
+   "measured": {
+    "op": {
+     "nodes": {
+      "b1": 8.82634,
+      "c1": 8.37449,
+      "c2": 3.80222,
+      "e2": 8.55951,
+      "fw": 8.55995,
+      "in": 0.0,
+      "o": 0.0,
+      "out": 0.0,
+      "r34": 3.59611,
+      "vcc": 9.0
+     },
+     "devices": {
+      "Q1": {
+       "type": "PNP",
+       "ic": -0.00024964,
+       "ib": -2.66867e-06,
+       "vbe": -0.173656,
+       "vbc": 0.451855,
+       "vce": -0.625511,
+       "region": "active"
+      },
+      "Q2": {
+       "type": "PNP",
+       "ic": -0.00043855,
+       "ib": -4.16447e-06,
+       "vbe": -0.185025,
+       "vbc": 4.57226,
+       "vce": -4.75729,
+       "region": "active"
+      }
+     },
+     "supply_current_a": 0.000692322
+    },
+    "ac": {
+     "gain_db": {
+      "100": 65.798,
+      "1000": 63.093,
+      "5000": 62.493
+     },
+     "phase_deg": {
+      "100": -315.09,
+      "1000": -360.9,
+      "5000": -380.41
+     },
+     "peak_db": 67.406,
+     "f_peak_hz": 70.853,
+     "f3db_low_hz": 55.194,
+     "f3db_high_hz": 142.12
+    },
+    "tran": [
+     {
+      "f_hz": 500.0,
+      "vin_peak": 0.1,
+      "thd_pct": 94.523,
+      "vout_peak": 1.4941,
+      "gain_tran_db": 23.487,
+      "h2_over_h1": 0.74219,
+      "tstop_s": 0.08,
+      "window_cycles": 10
+     }
+    ],
+    "pot_sweep": {
+     "RV1": {
+      "0": {
+       "gain_db_100": 46.03,
+       "gain_db_1k": 51.146,
+       "gain_db_10k": 50.918,
+       "peak_db": 51.206,
+       "f_peak_hz": 2294.3
+      },
+      "1": {
+       "gain_db_100": 65.798,
+       "gain_db_1k": 63.093,
+       "gain_db_10k": 61.069,
+       "peak_db": 67.406,
+       "f_peak_hz": 70.853
+      }
+     },
+     "RV2": {
+      "0": {
+       "gain_db_100": -35.479,
+       "gain_db_1k": -38.184,
+       "gain_db_10k": -40.207,
+       "peak_db": -33.871,
+       "f_peak_hz": 70.853
+      },
+      "1": {
+       "gain_db_100": 78.5,
+       "gain_db_1k": 75.796,
+       "gain_db_10k": 73.772,
+       "peak_db": 80.109,
+       "f_peak_hz": 70.853
+      }
+     }
+    }
+   },
+   "all_specs_pass": true
+  },
+  {
+   "id": "inductor_wah",
+   "file": "library/inductor_wah.cir",
+   "title": "Inductor wah band-pass",
+   "description": "Common-emitter stage loaded by a 500 mH inductor tank and buffered by an emitter follower; the Pedal pot bootstraps the tank capacitor so the resonance sweeps from about 480 Hz (heel) to 3 kHz (toe), the vocal \"wah\". This file is parked mid-sweep.",
+   "category": "filter",
+   "tags": [
+    "bjt",
+    "inductor",
+    "band-pass",
+    "resonant",
+    "wah",
+    "pedal"
+   ],
+   "input": "VIN",
+   "output": "out",
+   "supplies": [
+    "VCC"
+   ],
+   "pots": [
+    {
+     "name": "RV1",
+     "a": "0",
+     "w": "pw",
+     "b": "pb",
+     "value": 1000.0,
+     "taper": "lin",
+     "pos": 0.5,
+     "label": "Pedal"
+    }
+   ],
+   "specs": [
+    {
+     "spec": "peak_db in 3..12 dB",
+     "measured": 8.32651,
+     "pass": true,
+     "margin": 3.67349,
+     "unit": "dB"
+    },
+    {
+     "spec": "peak_f in 600..900 Hz",
+     "measured": 661.528,
+     "pass": true,
+     "margin": 61.5277,
+     "unit": "Hz"
+    },
+    {
+     "spec": "f3db_low in 450..800 Hz",
+     "measured": 549.48,
+     "pass": true,
+     "margin": 99.48,
+     "unit": "Hz"
+    },
+    {
+     "spec": "f3db_high in 700..1200 Hz",
+     "measured": 805.612,
+     "pass": true,
+     "margin": 105.612,
+     "unit": "Hz"
+    },
+    {
+     "spec": "gain_db(100) < -6 dB",
+     "measured": -19.1858,
+     "pass": true,
+     "margin": 13.1858,
+     "unit": "dB"
+    },
+    {
+     "spec": "gain_db(5000) < -3 dB",
+     "measured": -11.3746,
+     "pass": true,
+     "margin": 8.37463,
+     "unit": "dB"
+    },
+    {
+     "spec": "region(Q1) == active",
+     "measured": "active",
+     "target": "active",
+     "pass": true,
+     "unit": ""
+    },
+    {
+     "spec": "supply_current < 3mA",
+     "measured": 0.00203993,
+     "pass": true,
+     "margin": 0.000960069,
+     "unit": "A"
+    }
+   ],
+   "measured": {
+    "op": {
+     "nodes": {
+      "b": 1.38435,
+      "c": 4.24094,
+      "e": 0.777793,
+      "e2": 0.629792,
+      "e3": 3.59204,
+      "in": 0.0,
+      "lb": 4.24094,
+      "out": 0.0,
+      "pb": 0.0,
+      "pw": 0.0,
+      "vcc": 9.0,
+      "x": 1.38435
+     },
+     "devices": {
+      "Q1": {
+       "type": "NPN",
+       "ic": 0.000314313,
+       "ib": 5.83609e-07,
+       "vbe": 0.606559,
+       "vbc": -2.85659,
+       "vce": 3.46315,
+       "region": "active"
+      },
+      "Q2": {
+       "type": "NPN",
+       "ic": 0.00162979,
+       "ib": 2.95828e-06,
+       "vbe": 0.648901,
+       "vbc": -4.75906,
+       "vce": 5.40796,
+       "region": "active"
+      }
+     },
+     "supply_current_a": 0.00203993
+    },
+    "ac": {
+     "gain_db": {
+      "100": -19.186,
+      "1000": 0.95964,
+      "5000": -11.375
+     },
+     "phase_deg": {
+      "100": -67.406,
+      "1000": -223.58,
+      "5000": -206.03
+     },
+     "peak_db": 8.3265,
+     "f_peak_hz": 661.53,
+     "f3db_low_hz": 549.48,
+     "f3db_high_hz": 805.61
+    },
+    "pot_sweep": {
+     "RV1": {
+      "0": {
+       "gain_db_100": -19.04,
+       "gain_db_1k": -7.0192,
+       "gain_db_10k": -29.255,
+       "peak_db": 16.483,
+       "f_peak_hz": 479.2
+      },
+      "1": {
+       "gain_db_100": -19.326,
+       "gain_db_1k": 4.0747,
+       "gain_db_10k": 3.4188,
+       "peak_db": 14.801,
+       "f_peak_hz": 3024.7
+      }
+     }
+    }
+   },
+   "all_specs_pass": true
+  },
+  {
+   "id": "jfet_boost",
+   "file": "library/jfet_boost.cir",
+   "title": "JFET clean boost",
+   "description": "MPF102 common-source stage with partial source bypass: about +15 dB of clean-ish gain with a touch of warm even-order harmonics, then a level knob.",
+   "category": "amp",
+   "tags": [
+    "jfet",
+    "boost",
+    "clean",
+    "pedal"
+   ],
+   "input": "VIN",
+   "output": "out",
+   "supplies": [
+    "VCC"
+   ],
+   "pots": [
+    {
+     "name": "RV1",
+     "a": "0",
+     "w": "out",
+     "b": "o",
+     "value": 100000.0,
+     "taper": "log",
+     "pos": 1.0,
+     "label": "Level"
+    }
+   ],
+   "specs": [
+    {
+     "spec": "gain_db(1000) in 12..20 dB",
+     "measured": 14.7477,
+     "pass": true,
+     "margin": 2.74773,
+     "unit": "dB"
+    },
+    {
+     "spec": "gain_db(30) > 12 dB",
+     "measured": 14.5755,
+     "pass": true,
+     "margin": 2.57551,
+     "unit": "dB"
+    },
+    {
+     "spec": "gain_db(10000) > 12 dB",
+     "measured": 14.7479,
+     "pass": true,
+     "margin": 2.74788,
+     "unit": "dB"
+    },
+    {
+     "spec": "v(d) in 4..7 V",
+     "measured": 4.90382,
+     "pass": true,
+     "margin": 0.903818,
+     "unit": "V"
+    },
+    {
+     "spec": "region(J1) == saturation",
+     "measured": "saturation",
+     "target": "saturation",
+     "pass": true,
+     "unit": ""
+    },
+    {
+     "spec": "thd(1000, 0.1) < 3 %",
+     "measured": 1.18837,
+     "pass": true,
+     "margin": 1.81163,
+     "unit": "%"
+    },
+    {
+     "spec": "supply_current < 2mA",
+     "measured": 0.000871528,
+     "pass": true,
+     "margin": 0.00112847,
+     "unit": "A"
+    }
+   ],
+   "measured": {
+    "op": {
+     "nodes": {
+      "d": 4.90382,
+      "g": 6.75401e-06,
+      "in": 0.0,
+      "o": 0.0,
+      "out": 0.0,
+      "s": 1.83021,
+      "s2": 1.74306,
+      "vcc": 9.0
+     },
+     "devices": {
+      "J1": {
+       "type": "NJF",
+       "id": 0.000871528,
+       "vgs": -1.8302,
+       "vds": 3.07361,
+       "region": "saturation"
+      }
+     },
+     "supply_current_a": 0.000871528
+    },
+    "ac": {
+     "gain_db": {
+      "100": 14.732,
+      "1000": 14.748,
+      "5000": 14.748
+     },
+     "phase_deg": {
+      "100": -175.83,
+      "1000": -179.59,
+      "5000": -179.93
+     },
+     "peak_db": 14.748,
+     "f_peak_hz": 13829.0,
+     "f3db_low_hz": 6.1905,
+     "f3db_high_hz": null
+    },
+    "tran": [
+     {
+      "f_hz": 1000.0,
+      "vin_peak": 0.1,
+      "thd_pct": 1.1884,
+      "vout_peak": 0.55228,
+      "gain_tran_db": 14.843,
+      "h2_over_h1": 0.011882,
+      "tstop_s": 0.08,
+      "window_cycles": 20
+     }
+    ],
+    "pot_sweep": {
+     "RV1": {
+      "0": {
+       "gain_db_100": -85.268,
+       "gain_db_1k": -85.252,
+       "gain_db_10k": -85.252,
+       "peak_db": -85.252,
+       "f_peak_hz": 13829.0
+      },
+      "1": {
+       "gain_db_100": 14.732,
+       "gain_db_1k": 14.748,
+       "gain_db_10k": 14.748,
+       "peak_db": 14.748,
+       "f_peak_hz": 13829.0
+      }
+     }
+    }
+   },
+   "all_specs_pass": true
+  },
+  {
+   "id": "jfet_buffer",
+   "file": "library/jfet_buffer.cir",
+   "title": "JFET input buffer",
+   "description": "J201 source follower with a 1 M input impedance: unity gain, keeps the guitar's treble intact through long cables; it should sound like nothing at all.",
+   "category": "utility",
+   "tags": [
+    "jfet",
+    "buffer",
+    "source-follower",
+    "pedal"
+   ],
+   "input": "VIN",
+   "output": "out",
+   "supplies": [
+    "VCC"
+   ],
+   "pots": [],
+   "specs": [
+    {
+     "spec": "gain_db(1000) in -1..0 dB",
+     "measured": -0.508174,
+     "pass": true,
+     "margin": 0.491826,
+     "unit": "dB"
+    },
+    {
+     "spec": "gain_db(20) > -1.5 dB",
+     "measured": -0.563025,
+     "pass": true,
+     "margin": 0.936975,
+     "unit": "dB"
+    },
+    {
+     "spec": "gain_db(20000) > -1 dB",
+     "measured": -0.508152,
+     "pass": true,
+     "margin": 0.491848,
+     "unit": "dB"
+    },
+    {
+     "spec": "v(s) in 4..6 V",
+     "measured": 4.74065,
+     "pass": true,
+     "margin": 0.740646,
+     "unit": "V"
+    },
+    {
+     "spec": "region(J1) == saturation",
+     "measured": "saturation",
+     "target": "saturation",
+     "pass": true,
+     "unit": ""
+    },
+    {
+     "spec": "thd(1000, 2) < 1 %",
+     "measured": 0.3528,
+     "pass": true,
+     "margin": 0.6472,
+     "unit": "%"
+    },
+    {
+     "spec": "supply_current < 1mA",
+     "measured": 0.000219984,
+     "pass": true,
+     "margin": 0.000780016,
+     "unit": "A"
+    }
+   ],
+   "measured": {
+    "op": {
+     "nodes": {
+      "d": 8.97845,
+      "g": 4.50001,
+      "in": 0.0,
+      "out": 0.0,
+      "s": 4.74065,
+      "vb": 4.5,
+      "vcc": 9.0
+     },
+     "devices": {
+      "J1": {
+       "type": "NJF",
+       "id": 0.000215484,
+       "vgs": -0.240639,
+       "vds": 4.23781,
+       "region": "saturation"
+      }
+     },
+     "supply_current_a": 0.000219984
+    },
+    "ac": {
+     "gain_db": {
+      "100": -0.51036,
+      "1000": -0.50817,
+      "5000": -0.50815
+     },
+     "phase_deg": {
+      "100": 1.8146,
+      "1000": 0.18155,
+      "5000": 0.036687
+     },
+     "peak_db": -0.50814,
+     "f_peak_hz": 200000.0,
+     "f3db_low_hz": 2.478,
+     "f3db_high_hz": null
+    },
+    "tran": [
+     {
+      "f_hz": 1000.0,
+      "vin_peak": 2.0,
+      "thd_pct": 0.3528,
+      "vout_peak": 1.89,
+      "gain_tran_db": -0.49133,
+      "h2_over_h1": 0.0035004,
+      "tstop_s": 0.08,
+      "window_cycles": 20
+     }
+    ]
+   },
+   "all_specs_pass": true
+  },
+  {
+   "id": "mosfet_boost",
+   "file": "library/mosfet_boost.cir",
+   "title": "MOSFET clean boost",
+   "description": "BS170 common-source stage on a gate divider with a partly bypassed source resistor: about +18 dB of clean gain, a touch of even-order warmth when pushed, then a level knob.",
+   "category": "amp",
+   "tags": [
+    "mosfet",
+    "boost",
+    "clean",
+    "common-source",
+    "pedal"
+   ],
+   "input": "VIN",
+   "output": "out",
+   "supplies": [
+    "VCC"
+   ],
+   "pots": [
+    {
+     "name": "RV1",
+     "a": "0",
+     "w": "out",
+     "b": "o",
+     "value": 100000.0,
+     "taper": "log",
+     "pos": 1.0,
+     "label": "Level"
+    }
+   ],
+   "specs": [
+    {
+     "spec": "gain_db(1000) in 14..22 dB",
+     "measured": 18.7261,
+     "pass": true,
+     "margin": 3.27386,
+     "unit": "dB"
+    },
+    {
+     "spec": "gain_db(30) > 12 dB",
+     "measured": 18.3301,
+     "pass": true,
+     "margin": 6.33012,
+     "unit": "dB"
+    },
+    {
+     "spec": "gain_db(10000) > 14 dB",
+     "measured": 18.7265,
+     "pass": true,
+     "margin": 4.72649,
+     "unit": "dB"
+    },
+    {
+     "spec": "v(d) in 3..7 V",
+     "measured": 4.9677,
+     "pass": true,
+     "margin": 1.9677,
+     "unit": "V"
+    },
+    {
+     "spec": "region(M1) == saturation",
+     "measured": "saturation",
+     "target": "saturation",
+     "pass": true,
+     "unit": ""
+    },
+    {
+     "spec": "thd(1000, 0.1) < 3 %",
+     "measured": 0.23756,
+     "pass": true,
+     "margin": 2.76244,
+     "unit": "%"
+    },
+    {
+     "spec": "supply_current < 2mA",
+     "measured": 0.000861536,
+     "pass": true,
+     "margin": 0.00113846,
+     "unit": "A"
+    }
+   ],
+   "measured": {
+    "op": {
+     "nodes": {
+      "d": 4.9677,
+      "g": 3.6,
+      "in": 0.0,
+      "o": 0.0,
+      "out": 0.0,
+      "s": 1.51855,
+      "s2": 1.11532,
+      "vcc": 9.0
+     },
+     "devices": {
+      "M1": {
+       "type": "NMOS",
+       "id": 0.000857942,
+       "vgs": 2.08145,
+       "vds": 3.44916,
+       "region": "saturation"
+      }
+     },
+     "supply_current_a": 0.000861536
+    },
+    "ac": {
+     "gain_db": {
+      "100": 18.689,
+      "1000": 18.726,
+      "5000": 18.726
+     },
+     "phase_deg": {
+      "100": -173.89,
+      "1000": -179.4,
+      "5000": -179.96
+     },
+     "peak_db": 18.726,
+     "f_peak_hz": 6176.4,
+     "f3db_low_hz": 9.4112,
+     "f3db_high_hz": null
+    },
+    "tran": [
+     {
+      "f_hz": 1000.0,
+      "vin_peak": 0.1,
+      "thd_pct": 0.23756,
+      "vout_peak": 0.86511,
+      "gain_tran_db": 18.741,
+      "h2_over_h1": 0.002372,
+      "tstop_s": 0.08,
+      "window_cycles": 20
+     }
+    ],
+    "pot_sweep": {
+     "RV1": {
+      "0": {
+       "gain_db_100": -81.311,
+       "gain_db_1k": -81.274,
+       "gain_db_10k": -81.274,
+       "peak_db": -81.274,
+       "f_peak_hz": 6176.4
+      },
+      "1": {
+       "gain_db_100": 18.689,
+       "gain_db_1k": 18.726,
+       "gain_db_10k": 18.726,
+       "peak_db": 18.726,
+       "f_peak_hz": 6176.4
+      }
+     }
+    }
+   },
+   "all_specs_pass": true
+  },
+  {
+   "id": "octave_fuzz",
+   "file": "library/octave_fuzz.cir",
+   "title": "Octave-up rectifier fuzz",
+   "description": "Gain stage into a transistor phase splitter whose two opposite-phase outputs are full-wave rectified by germanium diodes: the fundamental largely cancels and a ringing octave-up appears, strongest on single notes high on the neck.",
+   "category": "fuzz",
+   "tags": [
+    "bjt",
+    "octave",
+    "rectifier",
+    "germanium-diodes",
+    "pedal"
+   ],
+   "input": "VIN",
+   "output": "out",
+   "supplies": [
+    "VCC"
+   ],
+   "pots": [
+    {
+     "name": "RV1",
+     "a": "0",
+     "w": "out",
+     "b": "sv",
+     "value": 100000.0,
+     "taper": "log",
+     "pos": 0.9,
+     "label": "Level"
+    }
+   ],
+   "specs": [
+    {
+     "spec": "thd(500, 0.2) > 100 %",
+     "measured": 1481.35,
+     "pass": true,
+     "margin": 1381.35,
+     "unit": "%"
+    },
+    {
+     "spec": "v(c2) in 5.5..8 V",
+     "measured": 6.83844,
+     "pass": true,
+     "margin": 1.16156,
+     "unit": "V"
+    },
+    {
+     "spec": "v(e2) in 1.5..3 V",
+     "measured": 2.17686,
+     "pass": true,
+     "margin": 0.676859,
+     "unit": "V"
+    },
+    {
+     "spec": "region(Q1) == active",
+     "measured": "active",
+     "target": "active",
+     "pass": true,
+     "unit": ""
+    },
+    {
+     "spec": "region(Q2) == active",
+     "measured": "active",
+     "target": "active",
+     "pass": true,
+     "unit": ""
+    },
+    {
+     "spec": "supply_current < 3mA",
+     "measured": 0.00156031,
+     "pass": true,
+     "margin": 0.00143969,
+     "unit": "A"
+    }
+   ],
+   "measured": {
+    "op": {
+     "nodes": {
+      "b1": 1.50776,
+      "b2": 2.82078,
+      "c1": 4.79816,
+      "c2": 6.83844,
+      "da": 2.63783e-15,
+      "db": 2.63749e-15,
+      "e1": 0.846373,
+      "e1b": 0.423187,
+      "e2": 2.17686,
+      "eb": 2.63749e-15,
+      "in": 0.0,
+      "out": 0.0,
+      "s": -1.16057e-15,
+      "sv": 0.0,
+      "vcc": 9.0
+     },
+     "devices": {
+      "Q1": {
+       "type": "NPN",
+       "ic": 0.000894009,
+       "ib": 6.38786e-06,
+       "vbe": 0.661387,
+       "vbc": -3.2904,
+       "vce": 3.95178,
+       "region": "active"
+      },
+      "Q2": {
+       "type": "NPN",
+       "ic": 0.000459906,
+       "ib": 3.25547e-06,
+       "vbe": 0.643921,
+       "vbc": -4.01766,
+       "vce": 4.66158,
+       "region": "active"
+      },
+      "D1": {
+       "id": 2.26041e-20,
+       "vd": 3.7984e-15
+      },
+      "D2": {
+       "id": 2.26041e-20,
+       "vd": 3.79806e-15
+      }
+     },
+     "supply_current_a": 0.00156031
+    },
+    "ac": {
+     "gain_db": {
+      "100": -31.452,
+      "1000": -31.291,
+      "5000": -31.289
+     },
+     "phase_deg": {
+      "100": -341.53,
+      "1000": -358.19,
+      "5000": -359.88
+     },
+     "peak_db": -30.724,
+     "f_peak_hz": 200000.0,
+     "f3db_low_hz": 23.981,
+     "f3db_high_hz": null
+    },
+    "tran": [
+     {
+      "f_hz": 500.0,
+      "vin_peak": 0.2,
+      "thd_pct": 1481.3,
+      "vout_peak": 0.27368,
+      "gain_tran_db": 2.7242,
+      "h2_over_h1": 14.761,
+      "tstop_s": 0.08,
+      "window_cycles": 10
+     }
+    ],
+    "pot_sweep": {
+     "RV1": {
+      "0": {
+       "gain_db_100": -129.13,
+       "gain_db_1k": -128.97,
+       "gain_db_10k": -128.97,
+       "peak_db": -128.4,
+       "f_peak_hz": 200000.0
+      },
+      "1": {
+       "gain_db_100": -29.131,
+       "gain_db_1k": -28.969,
+       "gain_db_10k": -28.966,
+       "peak_db": -28.403,
+       "f_peak_hz": 200000.0
+      }
+     }
+    }
+   },
+   "all_specs_pass": true
+  },
+  {
+   "id": "passive_tone_stack",
+   "file": "library/passive_tone_stack.cir",
+   "title": "Three-knob passive amp tone stack",
+   "description": "The classic bass/middle/treble passive network from tube amps, driven from a low-impedance stage into a 1 M grid load: the well-known mid scoop at noon, with Bass, Middle and Treble all interacting.",
+   "category": "tone",
+   "tags": [
+    "passive",
+    "tone-stack",
+    "amp",
+    "bass-mid-treble"
+   ],
+   "input": "VIN",
+   "output": "out",
+   "supplies": [],
+   "pots": [
+    {
+     "name": "RVT",
+     "a": "b1",
+     "w": "out",
+     "b": "t",
+     "value": 250000.0,
+     "taper": "log",
+     "pos": 0.5,
+     "label": "Treble"
+    },
+    {
+     "name": "RVB",
+     "a": "b1",
+     "w": "m",
+     "b": "m",
+     "value": 1000000.0,
+     "taper": "log",
+     "pos": 0.5,
+     "label": "Bass"
+    },
+    {
+     "name": "RVM",
+     "a": "m",
+     "w": "0",
+     "b": "0",
+     "value": 25000.0,
+     "taper": "lin",
+     "pos": 0.5,
+     "label": "Middle"
+    }
+   ],
+   "specs": [
+    {
+     "spec": "gain_db(100) in -5..-1 dB",
+     "measured": -2.91177,
+     "pass": true,
+     "margin": 1.91177,
+     "unit": "dB"
+    },
+    {
+     "spec": "gain_db(1000) < -7 dB",
+     "measured": -9.17718,
+     "pass": true,
+     "margin": 2.17718,
+     "unit": "dB"
+    },
+    {
+     "spec": "gain_db(5000) in -10..-4 dB",
+     "measured": -7.33958,
+     "pass": true,
+     "margin": 2.66042,
+     "unit": "dB"
+    }
+   ],
+   "measured": {
+    "op": {
+     "nodes": {
+      "b1": 0.0,
+      "in": 0.0,
+      "m": 0.0,
+      "n": 0.0,
+      "out": 0.0,
+      "t": 0.0
+     },
+     "devices": {}
+    },
+    "ac": {
+     "gain_db": {
+      "100": -2.9118,
+      "1000": -9.1772,
+      "5000": -7.3396
+     },
+     "phase_deg": {
+      "100": -0.15035,
+      "1000": -2.2178,
+      "5000": 3.3436
+     },
+     "peak_db": -2.8029,
+     "f_peak_hz": 77.69,
+     "f3db_low_hz": 23.625,
+     "f3db_high_hz": 278.9
+    },
+    "pot_sweep": {
+     "RVT": {
+      "0": {
+       "gain_db_100": -2.4517,
+       "gain_db_1k": -9.4542,
+       "gain_db_10k": -10.518,
+       "peak_db": -2.3628,
+       "f_peak_hz": 79.5
+      },
+      "1": {
+       "gain_db_100": -4.2857,
+       "gain_db_1k": -6.1524,
+       "gain_db_10k": -0.12694,
+       "peak_db": -0.00035456,
+       "f_peak_hz": 200000.0
+      }
+     },
+     "RVB": {
+      "0": {
+       "gain_db_100": -13.38,
+       "gain_db_1k": -9.3238,
+       "gain_db_10k": -7.1704,
+       "peak_db": -7.1235,
+       "f_peak_hz": 200000.0
+      },
+      "1": {
+       "gain_db_100": -2.2148,
+       "gain_db_1k": -9.3119,
+       "gain_db_10k": -7.1809,
+       "peak_db": -1.5403,
+       "f_peak_hz": 46.808
+      }
+     },
+     "RVM": {
+      "0": {
+       "gain_db_100": -3.0474,
+       "gain_db_1k": -15.943,
+       "gain_db_10k": -13.216,
+       "peak_db": -3.0159,
+       "f_peak_hz": 87.172
+      },
+      "1": {
+       "gain_db_100": -2.7382,
+       "gain_db_1k": -6.5023,
+       "gain_db_10k": -5.1176,
+       "peak_db": -2.5778,
+       "f_peak_hz": 74.193
+      }
+     }
+    }
+   },
+   "all_specs_pass": true
+  },
+  {
+   "id": "power_filter_led",
+   "file": "library/power_filter_led.cir",
+   "title": "9 V power filter with polarity protection and LED",
+   "description": "Pedal power entry: a series Schottky blocks a reversed adapter, an RC filter knocks down adapter ripple (VIN models the ripple riding on the 9 V), a red LED shows power and a resistor stands in for the pedal's ~5 mA draw.",
+   "category": "utility",
+   "tags": [
+    "power",
+    "led",
+    "reverse-polarity",
+    "ripple-filter",
+    "pedal"
+   ],
+   "input": "VIN",
+   "output": "out",
+   "supplies": [
+    "VCC"
+   ],
+   "pots": [],
+   "specs": [
+    {
+     "spec": "v(out) in 8.3..8.9 V",
+     "measured": 8.52041,
+     "pass": true,
+     "margin": 0.220414,
+     "unit": "V"
+    },
+    {
+     "spec": "gain_db(100) < -20 dB",
+     "measured": -23.8702,
+     "pass": true,
+     "margin": 3.8702,
+     "unit": "dB"
+    },
+    {
+     "spec": "gain_db(1000) < -38 dB",
+     "measured": -43.8511,
+     "pass": true,
+     "margin": 5.85107,
+     "unit": "dB"
+    },
+    {
+     "spec": "i(D2) in 1m..2.5m A",
+     "measured": 0.0014726,
+     "pass": true,
+     "margin": 0.000472602,
+     "unit": "A"
+    },
+    {
+     "spec": "supply_current < 10mA",
+     "measured": 0.00620616,
+     "pass": true,
+     "margin": 0.00379384,
+     "unit": "A"
+    },
+    {
+     "spec": "p(R1) < 0.125 W",
+     "measured": 0.00181027,
+     "pass": true,
+     "margin": 0.12319,
+     "unit": "W"
+    }
+   ],
+   "measured": {
+    "op": {
+     "nodes": {
+      "a": 8.8121,
+      "in": 9.0,
+      "l": 1.59921,
+      "out": 8.52041,
+      "raw": 9.0
+     },
+     "devices": {
+      "D1": {
+       "id": 0.00620616,
+       "vd": 0.187896
+      },
+      "D2": {
+       "id": 0.0014726,
+       "vd": 1.59921
+      }
+     },
+     "supply_current_a": 0.00620616
+    },
+    "ac": {
+     "gain_db": {
+      "100": -23.87,
+      "1000": -43.851,
+      "5000": -57.83
+     },
+     "phase_deg": {
+      "100": -86.179,
+      "1000": -89.617,
+      "5000": -89.923
+     },
+     "peak_db": -0.44007,
+     "f_peak_hz": 1.0,
+     "f3db_low_hz": null,
+     "f3db_high_hz": 6.8099
+    }
+   },
+   "all_specs_pass": true
+  },
+  {
+   "id": "rc_lowpass",
+   "file": "library/rc_lowpass.cir",
+   "title": "RC low-pass filter (1 kHz)",
+   "description": "First-order passive low-pass: flat below 1 kHz, then -20 dB/decade; listen for highs being shaved off like a treble roll-off.",
+   "category": "filter",
+   "tags": [
+    "textbook",
+    "passive",
+    "low-pass",
+    "first-order"
+   ],
+   "input": "VIN",
+   "output": "out",
+   "supplies": [],
+   "pots": [],
+   "specs": [
+    {
+     "spec": "fc in 960..1160 Hz",
+     "measured": 1058.45,
+     "pass": true,
+     "margin": 98.4495,
+     "unit": "Hz"
+    },
+    {
+     "spec": "gain_db(100) > -0.1 dB",
+     "measured": -0.038408,
+     "pass": true,
+     "margin": 0.061592,
+     "unit": "dB"
+    },
+    {
+     "spec": "gain_db(10000) in -21..-18.5 dB",
+     "measured": -19.534,
+     "pass": true,
+     "margin": 1.03405,
+     "unit": "dB"
+    },
+    {
+     "spec": "phase(1061) in -48..-42 deg",
+     "measured": -44.9991,
+     "pass": true,
+     "margin": 2.99911,
+     "unit": "deg"
+    }
+   ],
+   "measured": {
+    "op": {
+     "nodes": {
+      "in": 0.0,
+      "out": 0.0
+     },
+     "devices": {}
+    },
+    "ac": {
+     "gain_db": {
+      "100": -0.038408,
+      "1000": -2.7607,
+      "5000": -13.656
+     },
+     "phase_deg": {
+      "100": -5.3841,
+      "1000": -43.304,
+      "5000": -78.019
+     },
+     "peak_db": -3.8577e-06,
+     "f_peak_hz": 1.0,
+     "f3db_low_hz": null,
+     "f3db_high_hz": 1058.4
+    }
+   },
+   "all_specs_pass": true
+  },
+  {
+   "id": "sallen_key_lowpass",
+   "file": "library/sallen_key_lowpass.cir",
+   "title": "Sallen-Key low-pass filter (1 kHz Butterworth)",
+   "description": "Second-order unity-gain low-pass on a single 9 V supply: flat to 1 kHz then -40 dB/decade, twice as steep as a plain RC; sounds like a darker, smoother treble cut.",
+   "category": "filter",
+   "tags": [
+    "textbook",
+    "op-amp",
+    "low-pass",
+    "second-order",
+    "butterworth"
+   ],
+   "input": "VIN",
+   "output": "out",
+   "supplies": [
+    "VCC"
+   ],
+   "pots": [],
+   "specs": [
+    {
+     "spec": "fc in 980..1260 Hz",
+     "measured": 1117.62,
+     "pass": true,
+     "margin": 137.623,
+     "unit": "Hz"
+    },
+    {
+     "spec": "gain_db(100) in -0.3..0.3 dB",
+     "measured": -0.0829849,
+     "pass": true,
+     "margin": 0.217015,
+     "unit": "dB"
+    },
+    {
+     "spec": "gain_db(10000) < -36 dB",
+     "measured": -38.7758,
+     "pass": true,
+     "margin": 2.77579,
+     "unit": "dB"
+    },
+    {
+     "spec": "v(fo) in 4.3..4.7 V",
+     "measured": 4.49998,
+     "pass": true,
+     "margin": 0.199978,
+     "unit": "V"
+    },
+    {
+     "spec": "supply_current < 2mA",
+     "measured": 0.00185,
+     "pass": true,
+     "margin": 0.00015,
+     "unit": "A"
+    },
+    {
+     "spec": "thd(1000, 1) < 0.5 %",
+     "measured": 5.90604e-05,
+     "pass": true,
+     "margin": 0.499941,
+     "unit": "%"
+    }
+   ],
+   "measured": {
+    "op": {
+     "nodes": {
+      "a": 4.5,
+      "b": 4.5,
+      "c": 4.5,
+      "fo": 4.49998,
+      "in": 0.0,
+      "out": 0.0,
+      "vcc": 9.0,
+      "vref": 4.5
+     },
+     "devices": {
+      "XU1": {
+       "vout": 4.49998,
+       "saturated": false
+      }
+     },
+     "supply_current_a": 0.00185
+    },
+    "ac": {
+     "gain_db": {
+      "100": -0.082985,
+      "1000": -2.1329,
+      "5000": -26.717
+     },
+     "phase_deg": {
+      "100": -5.4186,
+      "1000": -83.505,
+      "5000": -163.03
+     },
+     "peak_db": -0.058506,
+     "f_peak_hz": 309.37,
+     "f3db_low_hz": 2.4996,
+     "f3db_high_hz": 1117.6
+    },
+    "tran": [
+     {
+      "f_hz": 1000.0,
+      "vin_peak": 1.0,
+      "thd_pct": 5.906e-05,
+      "vout_peak": 0.78214,
+      "gain_tran_db": -2.1343,
+      "h2_over_h1": 3.7087e-11,
+      "tstop_s": 0.08,
+      "window_cycles": 20
+     }
+    ]
+   },
+   "all_specs_pass": true
+  },
+  {
+   "id": "silicon_fuzz",
+   "file": "library/silicon_fuzz.cir",
+   "title": "Two-transistor silicon fuzz",
+   "description": "Two direct-coupled 2N3904 stages with DC feedback from the second emitter to the first base: thick, sputtery square-wave fuzz with long sustain; the Fuzz knob unbypasses the second emitter.",
+   "category": "fuzz",
+   "tags": [
+    "bjt",
+    "fuzz",
+    "silicon",
+    "two-transistor",
+    "pedal"
+   ],
+   "input": "VIN",
+   "output": "out",
+   "supplies": [
+    "VCC"
+   ],
+   "pots": [
+    {
+     "name": "RV1",
+     "a": "0",
+     "w": "fw",
+     "b": "e2",
+     "value": 1000.0,
+     "taper": "lin",
+     "pos": 1.0,
+     "label": "Fuzz"
+    },
+    {
+     "name": "RV2",
+     "a": "0",
+     "w": "out",
+     "b": "o",
+     "value": 500000.0,
+     "taper": "log",
+     "pos": 0.5,
+     "label": "Volume"
+    }
+   ],
+   "specs": [
+    {
+     "spec": "gain_db(1000) > 25 dB",
+     "measured": 61.4498,
+     "pass": true,
+     "margin": 36.4498,
+     "unit": "dB"
+    },
+    {
+     "spec": "v(c2) in 3.5..6 V",
+     "measured": 4.93486,
+     "pass": true,
+     "margin": 1.06514,
+     "unit": "V"
+    },
+    {
+     "spec": "region(Q1) == active",
+     "measured": "active",
+     "target": "active",
+     "pass": true,
+     "unit": ""
+    },
+    {
+     "spec": "region(Q2) == active",
+     "measured": "active",
+     "target": "active",
+     "pass": true,
+     "unit": ""
+    },
+    {
+     "spec": "thd(500, 0.1) > 20 %",
+     "measured": 109.948,
+     "pass": true,
+     "margin": 89.9482,
+     "unit": "%"
+    },
+    {
+     "spec": "supply_current < 2mA",
+     "measured": 0.00101511,
+     "pass": true,
+     "margin": 0.000984888,
+     "unit": "A"
+    },
+    {
+     "spec": "thd_gv(300, 0.1, 1.0) > 30 %",
+     "measured": 45.3239,
+     "pass": true,
+     "margin": 15.3239,
+     "unit": "%"
+    },
+    {
+     "spec": "thd_gv(300, 0.1, 0.25) < 10 %",
+     "measured": 3.29902,
+     "pass": true,
+     "margin": 6.70098,
+     "unit": "%"
+    }
+   ],
+   "measured": {
+    "op": {
+     "nodes": {
+      "b1": 0.626295,
+      "c1": 1.44903,
+      "c2": 4.93486,
+      "e2": 0.791041,
+      "fw": 0.790251,
+      "in": 0.0,
+      "o": 0.0,
+      "out": 0.0,
+      "r34": 5.30442,
+      "vcc": 9.0
+     },
+     "devices": {
+      "Q1": {
+       "type": "NPN",
+       "ic": 0.000223271,
+       "ib": 1.64789e-06,
+       "vbe": 0.626295,
+       "vbc": -0.822739,
+       "vce": 1.44903,
+       "region": "active"
+      },
+      "Q2": {
+       "type": "NPN",
+       "ic": 0.000786295,
+       "ib": 5.60405e-06,
+       "vbe": 0.657993,
+       "vbc": -3.48582,
+       "vce": 4.14382,
+       "region": "active"
+      }
+     },
+     "supply_current_a": 0.00101511
+    },
+    "ac": {
+     "gain_db": {
+      "100": 65.229,
+      "1000": 61.45,
+      "5000": 61.408
+     },
+     "phase_deg": {
+      "100": -304.62,
+      "1000": -356.71,
+      "5000": -361.61
+     },
+     "peak_db": 66.21,
+     "f_peak_hz": 81.353,
+     "f3db_low_hz": 63.636,
+     "f3db_high_hz": 145.43
+    },
+    "tran": [
+     {
+      "f_hz": 500.0,
+      "vin_peak": 0.1,
+      "thd_pct": 109.95,
+      "vout_peak": 1.4584,
+      "gain_tran_db": 23.277,
+      "h2_over_h1": 0.81337,
+      "tstop_s": 0.08,
+      "window_cycles": 10
+     }
+    ],
+    "pot_sweep": {
+     "RV1": {
+      "0": {
+       "gain_db_100": 42.053,
+       "gain_db_1k": 47.627,
+       "gain_db_10k": 47.733,
+       "peak_db": 47.733,
+       "f_peak_hz": 9789.8
+      },
+      "1": {
+       "gain_db_100": 65.229,
+       "gain_db_1k": 61.45,
+       "gain_db_10k": 61.385,
+       "peak_db": 66.21,
+       "f_peak_hz": 81.353
+      }
+     },
+     "RV2": {
+      "0": {
+       "gain_db_100": -36.047,
+       "gain_db_1k": -39.827,
+       "gain_db_10k": -39.891,
+       "peak_db": -35.067,
+       "f_peak_hz": 81.353
+      },
+      "1": {
+       "gain_db_100": 77.932,
+       "gain_db_1k": 74.153,
+       "gain_db_10k": 74.088,
+       "peak_db": 78.913,
+       "f_peak_hz": 81.353
+      }
+     }
+    }
+   },
+   "all_specs_pass": true
+  },
+  {
+   "id": "softclip_overdrive",
+   "file": "library/softclip_overdrive.cir",
+   "title": "Op-amp soft-clip overdrive",
+   "description": "Non-inverting op-amp with antiparallel diodes in the feedback loop: smooth, compressed overdrive with a mid hump (lows cut below about 720 Hz before clipping) and an active treble tone control; up to about 40 dB of gain.",
+   "category": "drive",
+   "tags": [
+    "op-amp",
+    "overdrive",
+    "soft-clip",
+    "mid-hump",
+    "tone",
+    "pedal"
+   ],
+   "input": "VIN",
+   "output": "out",
+   "supplies": [
+    "VCC"
+   ],
+   "pots": [
+    {
+     "name": "RV1",
+     "a": "f",
+     "w": "n",
+     "b": "n",
+     "value": 500000.0,
+     "taper": "log",
+     "pos": 0.5,
+     "label": "Drive"
+    },
+    {
+     "name": "RV2",
+     "a": "ta",
+     "w": "tw",
+     "b": "tb",
+     "value": 20000.0,
+     "taper": "lin",
+     "pos": 0.5,
+     "label": "Tone"
+    },
+    {
+     "name": "RV3",
+     "a": "0",
+     "w": "out",
+     "b": "c",
+     "value": 100000.0,
+     "taper": "log",
+     "pos": 0.7,
+     "label": "Level"
+    }
+   ],
+   "specs": [
+    {
+     "spec": "gain_db(1000) in 14..22 dB",
+     "measured": 17.3072,
+     "pass": true,
+     "margin": 3.30718,
+     "unit": "dB"
+    },
+    {
+     "spec": "gain_db(100) < 10 dB",
+     "measured": 6.48444,
+     "pass": true,
+     "margin": 3.51556,
+     "unit": "dB"
+    },
+    {
+     "spec": "v(o1) in 4.3..4.7 V",
+     "measured": 4.49998,
+     "pass": true,
+     "margin": 0.199981,
+     "unit": "V"
+    },
+    {
+     "spec": "v(o2) in 4.3..4.7 V",
+     "measured": 4.49997,
+     "pass": true,
+     "margin": 0.199965,
+     "unit": "V"
+    },
+    {
+     "spec": "thd(1000, 0.2) > 5 %",
+     "measured": 9.12923,
+     "pass": true,
+     "margin": 4.12923,
+     "unit": "%"
+    },
+    {
+     "spec": "vout_peak(1000, 0.2) < 1 V",
+     "measured": 0.195145,
+     "pass": true,
+     "margin": 0.804855,
+     "unit": "V"
+    },
+    {
+     "spec": "supply_current < 5mA",
+     "measured": 0.00295,
+     "pass": true,
+     "margin": 0.00205,
+     "unit": "A"
+    }
+   ],
+   "measured": {
+    "op": {
+     "nodes": {
+      "c": 0.0,
+      "f": 4.49998,
+      "g": 4.49998,
+      "in": 0.0,
+      "n": 4.49998,
+      "n2": 4.49997,
+      "o1": 4.49998,
+      "o2": 4.49997,
+      "out": 0.0,
+      "p": 4.5,
+      "t1": 4.49998,
+      "ta": 4.49998,
+      "tb": 4.49997,
+      "tw": 4.49997,
+      "vcc": 9.0,
+      "vref": 4.5
+     },
+     "devices": {
+      "XU1": {
+       "vout": 4.49998,
+       "saturated": false
+      },
+      "D1": {
+       "id": -2.73355e-14,
+       "vd": -4.91548e-07
+      },
+      "D2": {
+       "id": 2.73358e-14,
+       "vd": 4.91548e-07
+      },
+      "XU2": {
+       "vout": 4.49997,
+       "saturated": false
+      }
+     },
+     "supply_current_a": 0.00295
+    },
+    "ac": {
+     "gain_db": {
+      "100": 6.4844,
+      "1000": 17.307,
+      "5000": 7.2261
+     },
+     "phase_deg": {
+      "100": 65.967,
+      "1000": -17.989,
+      "5000": -91.417
+     },
+     "peak_db": 17.536,
+     "f_peak_hz": 777.25,
+     "f3db_low_hz": 308.33,
+     "f3db_high_hz": 1958.9
+    },
+    "tran": [
+     {
+      "f_hz": 1000.0,
+      "vin_peak": 0.2,
+      "thd_pct": 9.1292,
+      "vout_peak": 0.19514,
+      "gain_tran_db": -0.21346,
+      "h2_over_h1": 4.2461e-08,
+      "tstop_s": 0.08,
+      "window_cycles": 20
+     }
+    ],
+    "pot_sweep": {
+     "RV1": {
+      "0": {
+       "gain_db_100": -1.8595,
+       "gain_db_1k": 8.0377,
+       "gain_db_10k": -8.0352,
+       "peak_db": 8.3309,
+       "f_peak_hz": 759.56
+      },
+      "1": {
+       "gain_db_100": 15.813,
+       "gain_db_1k": 26.047,
+       "gain_db_10k": 3.7738,
+       "peak_db": 26.152,
+       "f_peak_hz": 832.85
+      }
+     },
+     "RV2": {
+      "0": {
+       "gain_db_100": 6.3154,
+       "gain_db_1k": 12.153,
+       "gain_db_10k": -1.5811,
+       "peak_db": 13.363,
+       "f_peak_hz": 513.48
+      },
+      "1": {
+       "gain_db_100": 6.7999,
+       "gain_db_1k": 21.199,
+       "gain_db_10k": 5.2786,
+       "peak_db": 21.21,
+       "f_peak_hz": 1048.5
+      }
+     },
+     "RV3": {
+      "0": {
+       "gain_db_100": -86.301,
+       "gain_db_1k": -75.478,
+       "gain_db_10k": -92.74,
+       "peak_db": -75.249,
+       "f_peak_hz": 777.25
+      },
+      "1": {
+       "gain_db_100": 13.699,
+       "gain_db_1k": 24.522,
+       "gain_db_10k": 7.2603,
+       "peak_db": 24.751,
+       "f_peak_hz": 777.25
+      }
+     }
+    }
+   },
+   "all_specs_pass": true
+  },
+  {
+   "id": "treble_booster",
+   "file": "library/treble_booster.cir",
+   "title": "Germanium treble booster",
+   "description": "Single AC128 germanium PNP common-emitter stage (negative-ground wiring) with a small 4.7n input cap: cuts the lows and adds over 30 dB in the upper mids and treble, meant to push an already loud amp into bright, cutting overdrive.",
+   "category": "drive",
+   "tags": [
+    "bjt",
+    "germanium",
+    "pnp",
+    "treble",
+    "boost",
+    "pedal"
+   ],
+   "input": "VIN",
+   "output": "out",
+   "supplies": [
+    "VCC"
+   ],
+   "pots": [
+    {
+     "name": "RV1",
+     "a": "0",
+     "w": "w",
+     "b": "c",
+     "value": 10000.0,
+     "taper": "log",
+     "pos": 1.0,
+     "label": "Boost"
+    }
+   ],
+   "specs": [
+    {
+     "spec": "gain_db(100) < 10 dB",
+     "measured": 7.54453,
+     "pass": true,
+     "margin": 2.45547,
+     "unit": "dB"
+    },
+    {
+     "spec": "gain_db(5000) > 25 dB",
+     "measured": 34.6301,
+     "pass": true,
+     "margin": 9.63008,
+     "unit": "dB"
+    },
+    {
+     "spec": "v(c) in 1.5..4 V",
+     "measured": 2.17367,
+     "pass": true,
+     "margin": 0.67367,
+     "unit": "V"
+    },
+    {
+     "spec": "region(Q1) == active",
+     "measured": "active",
+     "target": "active",
+     "pass": true,
+     "unit": ""
+    },
+    {
+     "spec": "supply_current < 1mA",
+     "measured": 0.000234322,
+     "pass": true,
+     "margin": 0.000765678,
+     "unit": "A"
+    }
+   ],
+   "measured": {
+    "op": {
+     "nodes": {
+      "b": 7.97886,
+      "c": 2.17367,
+      "e": 8.14471,
+      "in": 0.0,
+      "out": 0.0,
+      "vcc": 9.0,
+      "w": 2.17345
+     },
+     "devices": {
+      "Q1": {
+       "type": "PNP",
+       "ic": -0.000217386,
+       "ib": -1.9599e-06,
+       "vbe": -0.165853,
+       "vbc": 5.80519,
+       "vce": -5.97104,
+       "region": "active"
+      }
+     },
+     "supply_current_a": 0.000234322
+    },
+    "ac": {
+     "gain_db": {
+      "100": 7.5445,
+      "1000": 27.02,
+      "5000": 34.63
+     },
+     "phase_deg": {
+      "100": -80.614,
+      "1000": -110.78,
+      "5000": -153.62
+     },
+     "peak_db": 35.569,
+     "f_peak_hz": 47963.0,
+     "f3db_low_hz": 2481.9,
+     "f3db_high_hz": null
+    },
+    "pot_sweep": {
+     "RV1": {
+      "0": {
+       "gain_db_100": -72.376,
+       "gain_db_1k": -52.9,
+       "gain_db_10k": -44.604,
+       "peak_db": -44.367,
+       "f_peak_hz": 47963.0
+      },
+      "1": {
+       "gain_db_100": 7.5445,
+       "gain_db_1k": 27.02,
+       "gain_db_10k": 35.33,
+       "peak_db": 35.569,
+       "f_peak_hz": 47963.0
+      }
+     }
+    }
+   },
+   "all_specs_pass": true
+  },
+  {
+   "id": "wien_oscillator",
+   "file": "library/wien_oscillator.cir",
+   "title": "Wien-bridge sine oscillator (1 kHz)",
+   "description": "Op-amp Wien bridge on a single 9 V supply: 16k and 10n set about 1 kHz, and two 1N4148 diodes across part of the feedback resistor hold the loop gain at 3 so it settles to a clean sine of about 1.5 V peak (about 1 % THD); a sanity test for transient simulation.",
+   "category": "oscillator",
+   "tags": [
+    "textbook",
+    "op-amp",
+    "oscillator",
+    "sine",
+    "1khz"
+   ],
+   "input": null,
+   "output": "out",
+   "supplies": [
+    "VCC"
+   ],
+   "pots": [],
+   "specs": [
+    {
+     "spec": "v(o) in 4.3..4.7 V",
+     "measured": 4.49992,
+     "pass": true,
+     "margin": 0.19992,
+     "unit": "V"
+    },
+    {
+     "spec": "supply_current < 3mA",
+     "measured": 0.00185,
+     "pass": true,
+     "margin": 0.00115,
+     "unit": "A"
+    }
+   ],
+   "measured": {
+    "op": {
+     "nodes": {
+      "f": 4.49995,
+      "n": 4.49997,
+      "o": 4.49992,
+      "out": 0.0,
+      "p": 4.49999,
+      "s": 4.49992,
+      "vcc": 9.0,
+      "vref": 4.49999
+     },
+     "devices": {
+      "XU1": {
+       "vout": 4.49992,
+       "saturated": false
+      },
+      "D1": {
+       "id": -9.37469e-13,
+       "vd": -1.68607e-05
+      },
+      "D2": {
+       "id": 9.37817e-13,
+       "vd": 1.68607e-05
+      }
+     },
+     "supply_current_a": 0.00185
+    },
+    "oscillator": {
+     "oscillates": true,
+     "freq_hz": 992.733,
+     "vpeak": 1.54215,
+     "thd_pct": 1.26376,
+     "dc": -0.00176031,
+     "tstop_s": 0.2
+    }
+   },
+   "all_specs_pass": true
+  }
+ ]
+}

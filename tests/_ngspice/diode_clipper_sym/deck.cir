@@ -1,0 +1,21 @@
+* Symmetric diode clipper (1N4148 pair) (generated for the Hotwire cross-check)
+VIN in 0 DC 0 AC 1 SIN(0 2 1000 0 0)
+R1 in out 4700
+D1 out 0 D1N4148
+D2 0 out D1N4148
+C1 out 0 1e-08
+.model D1N4148 D(IS=2.52e-09 N=1.752 RS=0.568 CJO=4e-12 M=0.4 TT=1.15e-08)
+.options rshunt=1e12 reltol=1e-6 abstol=1e-15 vntol=1e-9 itl1=500 itl4=200
+.control
+set wr_singlescale
+set wr_vecnames
+option numdgt=12
+op
+wrdata <repo>/tests/_ngspice/diode_clipper_sym/op.txt v(in) v(out)
+ac dec 20 10 100000
+wrdata <repo>/tests/_ngspice/diode_clipper_sym/ac.txt v(out)
+tran 5e-06 0.004 0 5e-06
+linearize v(in) v(out)
+wrdata <repo>/tests/_ngspice/diode_clipper_sym/tran.txt v(in) v(out)
+.endc
+.end

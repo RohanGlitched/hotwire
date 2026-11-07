@@ -1,0 +1,13 @@
+*@ title RC low-pass filter (1 kHz)
+* First-order passive low-pass: flat below 1 kHz, then -20 dB/decade; listen for highs being shaved off like a treble roll-off.
+*@ in VIN
+*@ out out
+*@ tol R=1% C=5%
+*@ spec fc in 960..1160 Hz
+*@ spec gain_db(100) > -0.1 dB
+*@ spec gain_db(10000) in -21..-18.5 dB
+*@ spec phase(1061) in -48..-42 deg
+VIN in 0 DC 0 AC 1
+R1 in out 10k
+C1 out 0 15n
+.end

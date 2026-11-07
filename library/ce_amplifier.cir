@@ -1,0 +1,26 @@
+*@ title Common-emitter amplifier with emitter degeneration
+* Single 2N3904 voltage amplifier, gain about 19x (25 dB) set by Rc over the unbypassed emitter resistor; clean and slightly warm until the collector runs out of swing.
+*@ in VIN
+*@ out out
+*@ supply VCC
+*@ spec gain_db(1000) in 24..27 dB
+*@ spec f3db_low < 40 Hz
+*@ spec gain_db(20000) > 24 dB
+*@ spec v(c) in 4..5.5 V
+*@ spec region(Q1) == active
+*@ spec thd(1000, 0.05) < 2 %
+*@ spec headroom(1000) > 0.05 V
+*@ spec supply_current < 2mA
+VIN in 0 DC 0 AC 1
+VCC vcc 0 DC 9
+C1 in b 1u
+R1 vcc b 47k
+R2 b 0 10k
+Q1 c b e 2N3904
+RC vcc c 4.7k
+RE1 e e2 220
+RE2 e2 0 820
+CE e2 0 100u
+C2 c out 1u
+RL out 0 100k
+.end

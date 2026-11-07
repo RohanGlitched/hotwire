@@ -1,0 +1,25 @@
+*@ title Wien-bridge sine oscillator (1 kHz)
+* Op-amp Wien bridge on a single 9 V supply: 16k and 10n set about 1 kHz, and two 1N4148 diodes across part of the feedback resistor hold the loop gain at 3 so it settles to a clean sine of about 1.5 V peak (about 1 % THD); a sanity test for transient simulation.
+*@ out out
+*@ supply VCC
+*@ spec v(o) in 4.3..4.7 V
+*@ spec supply_current < 3mA
+VCC vcc 0 DC 9
+RREF1 vcc vref 10k
+RREF2 vref 0 10k
+CREF vref 0 47u ic=4.5
+* frequency-setting arms: series RC from the output, parallel RC to the 4.5 V reference
+R1 o s 16k
+C1 s p 10n ic=0.1
+R2 p vref 16k
+C2 p vref 10n
+XU1 p n vcc 0 o TL072
+* gain network: 1 + (13k + 7.5k) / 10k = 3.05 at small amplitude; the diodes shunt the 7.5k until the loop gain is exactly 3
+RG n vref 10k
+RF1 o f 13k
+RF2 f n 7.5k
+D1 f n 1N4148
+D2 n f 1N4148
+COUT o out 1u ic=4.5
+RL out 0 100k
+.end

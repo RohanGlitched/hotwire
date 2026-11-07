@@ -1,0 +1,29 @@
+* Passive Baxandall bass/treble tone stack with pots (generated for the Hotwire cross-check)
+VIN in 0 DC 0 AC 1 SIN(0 1 200 0 0)
+R1 in n1 10000
+RVB_A n1 wb 43576.5666948
+RVB_B wb n2 56423.4333052
+R2 n2 0 1000
+C1 n1 wb 2.2e-08
+C2 n2 wb 2.2e-07
+R3 wb out 10000
+C3 in n3 2.2e-09
+RVT_A n3 wt 10531.3641366
+RVT_B wt n4 89468.6358634
+C4 n4 0 2.2e-08
+R4 wt out 1000
+RL out 0 1000000
+.options rshunt=1e12 reltol=1e-6 abstol=1e-15 vntol=1e-9 itl1=500 itl4=200
+.control
+set wr_singlescale
+set wr_vecnames
+option numdgt=12
+op
+wrdata <repo>/tests/_ngspice/baxandall_tone_stack/op.txt v(in) v(n1) v(wb) v(n2) v(out) v(n3) v(wt) v(n4)
+ac dec 20 10 100000
+wrdata <repo>/tests/_ngspice/baxandall_tone_stack/ac.txt v(out)
+tran 5e-06 0.01 0 5e-06
+linearize v(in) v(n1) v(wb) v(n2) v(out) v(n3) v(wt) v(n4)
+wrdata <repo>/tests/_ngspice/baxandall_tone_stack/tran.txt v(in) v(n1) v(wb) v(n2) v(out) v(n3) v(wt) v(n4)
+.endc
+.end

@@ -1,0 +1,21 @@
+Sallen-Key low-pass on +/-9 V
+
+1. Cut a piece of stripboard 14 holes wide by 9 strips (1.4 x 0.9 in), strips running left to right. Strips are lettered A to I from the top and holes numbered 1 to 14 from the left, so hole C12 is strip C, hole 12. The layout is drawn from the component side.
+2. Cut the copper at 8 holes: B4, D9, E6, E9, F5, F9, G9, I9. On the copper side left and right are mirrored, so count from the same corner. Twist a 3.5 mm drill bit by hand until the copper ring is gone, then hold the board to a light to make sure no sliver bridges the cut.
+3. Fit 5 wire links (insulated solid-core wire, lying flat): C7 to E7, B6 to F6, A12 to E12, C13 to F13, E14 to I14.
+4. R1 10k resistor (brown black orange gold) from hole B1 to hole E1.
+5. R0 1M resistor (brown black green gold) from hole F2 to hole I2.
+6. R3 100 resistor (brown black brown gold) from hole C4 to hole H4.
+7. R2 10k resistor (brown black orange gold) from hole E5 to hole B5.
+8. U1 8-pin DIP socket with pin 1 at hole D8, notch toward the top of the board. The chip goes in last.
+9. C1 22nF film capacitor from hole E2 to hole C2.
+10. C2 10nF film capacitor from hole F7 to hole I7.
+11. C0 1µF electrolytic, 16 V or more: + at hole B3, - at hole F3. Polarity check: the stripe (-) faces hole F3.
+12. C4 10µF electrolytic, 16 V or more: + at hole I3, - at hole G3. Polarity check: the stripe (-) faces hole G3.
+13. C3 10µF electrolytic, 16 V or more lying along the strip over the cut: + at hole I10, - at hole I8. Polarity check: the stripe (-) faces hole I8.
+14. Off-board wiring, stranded wire about 10 cm long: +9V pad at hole A1 to the DC jack + (the sleeve lug on a 2.1 mm centre-negative jack) or the battery clip +; GND pad at hole I1 to the jack sleeves and the DC jack ground; IN pad at hole F1 to the input jack tip (through the footswitch for true bypass); OUT pad at hole H1 to the output jack tip (through the footswitch for true bypass); −9V pad at hole G1 to the negative supply.
+15. Before power: with a meter on ohms, check for shorts between +9V (A1) and GND (I1). It must not read near 0 ohms. Then check the neighbouring strips at every cut for solder bridges.
+16. Fit the chip: TL071 into the U1 socket, notch matching. Power up and measure the supply at the V+ pin (U1 pin 7) before playing.
+
+Notes:
+- C0 sits with almost no DC across it, so its polarity hardly matters; the layout puts + toward a.

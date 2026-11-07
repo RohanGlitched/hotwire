@@ -1,0 +1,32 @@
+* Inverting op-amp, gain -10, driven into the rails (generated for the Hotwire cross-check)
+VCC vcc 0 DC 9
+VEE vee 0 DC -9
+VIN in 0 DC 0 AC 1 SIN(0 1 1000 0 0)
+R1 in m 10000
+R2 m out 100000
+X1 0 m vcc vee out OA_0
+RL out 0 10000
+.subckt OA_0 inp inn vcc vee out
+Rin inp inn 1e+12
+G1 0 p inp inn 200
+Rp p 0 1000
+Cp p 0 1.06103295395e-05
+Bcl p 0 I=3000*(((v(p)-(((v(vcc)-1.5)+(v(vee)+1.5))/2)-4*max(((v(vcc)-1.5)-(v(vee)+1.5))/2,0.01))>0 ? (v(p)-(((v(vcc)-1.5)+(v(vee)+1.5))/2)-4*max(((v(vcc)-1.5)-(v(vee)+1.5))/2,0.01))+0.01*ln(1+exp(-(v(p)-(((v(vcc)-1.5)+(v(vee)+1.5))/2)-4*max(((v(vcc)-1.5)-(v(vee)+1.5))/2,0.01))/0.01)) : 0.01*ln(1+exp((v(p)-(((v(vcc)-1.5)+(v(vee)+1.5))/2)-4*max(((v(vcc)-1.5)-(v(vee)+1.5))/2,0.01))/0.01)))-(((((v(vcc)-1.5)+(v(vee)+1.5))/2)-4*max(((v(vcc)-1.5)-(v(vee)+1.5))/2,0.01)-v(p))>0 ? ((((v(vcc)-1.5)+(v(vee)+1.5))/2)-4*max(((v(vcc)-1.5)-(v(vee)+1.5))/2,0.01)-v(p))+0.01*ln(1+exp(-((((v(vcc)-1.5)+(v(vee)+1.5))/2)-4*max(((v(vcc)-1.5)-(v(vee)+1.5))/2,0.01)-v(p))/0.01)) : 0.01*ln(1+exp(((((v(vcc)-1.5)+(v(vee)+1.5))/2)-4*max(((v(vcc)-1.5)-(v(vee)+1.5))/2,0.01)-v(p))/0.01))))
+Bo o 0 V=(((v(vcc)-1.5)+(v(vee)+1.5))/2)+max(((v(vcc)-1.5)-(v(vee)+1.5))/2,0.01)*tanh((v(p)-(((v(vcc)-1.5)+(v(vee)+1.5))/2))/max(((v(vcc)-1.5)-(v(vee)+1.5))/2,0.01))
+Ro o out 75
+Iq vcc vee 0.0014
+.ends
+.options rshunt=1e12 reltol=1e-6 abstol=1e-15 vntol=1e-9 itl1=500 itl4=200
+.control
+set wr_singlescale
+set wr_vecnames
+option numdgt=12
+op
+wrdata <repo>/tests/_ngspice/opamp_inverting_clip/op.txt v(vcc) v(vee) v(in) v(m) v(out)
+ac dec 20 10 1000000
+wrdata <repo>/tests/_ngspice/opamp_inverting_clip/ac.txt v(out)
+tran 2e-06 0.003 0 2e-06
+linearize v(vcc) v(vee) v(in) v(m) v(out)
+wrdata <repo>/tests/_ngspice/opamp_inverting_clip/tran.txt v(vcc) v(vee) v(in) v(m) v(out)
+.endc
+.end
