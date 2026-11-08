@@ -3,7 +3,7 @@
   "label": "Hotwire",
   "description": "Analog circuit bench: designs, verdicts, plots, knobs and audio for the Hotwire desktop pane.",
   "icon": "CircuitBoard",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "tab": { "hidden": true },
   "api": "plugin_api.py"
 }

@@ -1,5 +1,5 @@
 name: hotwire
-version: 1.0.0
+version: 1.0.1
 manifest_version: 2
 api_version: 1
 description: "Analog circuit design bench: Hermes writes a SPICE netlist from plain English, proves it against measurable specs with a built-in simulator, and lets you hear and play through it before you solder anything."

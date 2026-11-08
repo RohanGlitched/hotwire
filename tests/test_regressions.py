@@ -44,9 +44,9 @@ X1 p m vp vn out TL072
 @pytest.fixture()
 def tools(tmp_path, monkeypatch):
     monkeypatch.setenv("HOTWIRE_DATA", str(tmp_path))
-    hw.tools._BENCH = None
+    hw.tools._BENCHES.clear()
     yield hw.tools
-    hw.tools._BENCH = None
+    hw.tools._BENCHES.clear()
 
 
 def call(tools, name, **args):
@@ -135,3 +135,69 @@ def test_tune_never_saves_a_regression(tools):
 def test_high_voltage_warning(tools):
     r = call(tools, "circuit_check", netlist="V1 a 0 DC 0 SIN(0 325 50)\nR1 a 0 10k\n")
     assert any(i["code"] == "high_voltage" for i in r["erc"])
+
+
+# --- catalog review (teknium1, Nov 8): output paths, WAV inputs, per-profile Bench ---------
+
+def test_pot_name_cannot_steer_paths(tools, tmp_path):
+    from engine.netlist import NetlistError
+    bad = (ROOT / "library" / "diode_hard_clipper.cir").read_text(encoding="utf-8").replace(
+        "*@ pot RV1 ", "*@ pot ../../../evil/RV1 ")
+    with pytest.raises(NetlistError, match="pot name"):
+        parse(bad)
+    r = call(tools, "circuit_audition", netlist=bad, seconds=0.5)
+    assert r["ok"] is False and "pot name" in r["error"]
+    assert not (tmp_path.parent / "evil").exists()
+
+
+def test_store_file_refuses_escapes(tmp_path):
+    from engine.store import Store
+    st = Store(tmp_path)
+    d = st.root / "x" / "v1"
+    d.mkdir(parents=True)
+    assert st.file(d, "dry-guitar-riff.wav").parent == d.resolve()
+    for name in ("../a.wav", "a/../../b.wav", "..", "x/y.wav", ""):
+        with pytest.raises(ValueError):
+            st.file(d, name)
+    with pytest.raises(ValueError):
+        st.file(tmp_path.parent, "a.wav")
+
+
+def test_audition_files_stay_in_store(tools, tmp_path):
+    r = call(tools, "circuit_audition", path="diode_hard_clipper", seconds=0.5, pots={"RV1": 0.3})
+    assert r["ok"]
+    for f in r["media"] + [r["wet"], r["dry"]]:
+        assert pathlib.Path(f).resolve().is_relative_to(tmp_path.resolve())
+    assert "rv130" in pathlib.Path(r["wet"]).name
+
+
+def test_wav_inputs_are_checked(tools, tmp_path):
+    import numpy as np
+    from engine import audio
+    good = tmp_path / "dry.wav"
+    audio.write_wav(good, np.sin(np.linspace(0, 2000, 24000)) * 0.3, 24000)
+    notwav = tmp_path / "dry.txt"
+    notwav.write_bytes(good.read_bytes())
+    (tmp_path / "folder.wav").mkdir()
+    big = tmp_path / "big.wav"
+    with open(big, "wb") as f:
+        f.truncate(audio.AUDIO_MAX + 1)
+    for p, msg in ((notwav, "not a .wav"), (big, "at most"), (tmp_path / "missing.wav", "can't find"),
+                   (tmp_path / "folder.wav", "can't find")):
+        with pytest.raises(ValueError, match=msg):
+            audio.user_wav(p)
+        r = call(tools, "circuit_match", path="diode_hard_clipper", dry=str(p), wet=str(good))
+        assert r["ok"] is False
+    r = call(tools, "circuit_audition", path="rc_lowpass", source=str(big), seconds=0.5)
+    assert r["ok"] is False and "at most" in r["error"]
+
+
+def test_bench_follows_the_active_profile(tools, tmp_path, monkeypatch):
+    a, b = tmp_path / "profile-a", tmp_path / "profile-b"
+    monkeypatch.setenv("HOTWIRE_DATA", str(a))
+    ra = json.loads(tools.circuit_check({"path": "rc_lowpass", "name": "alpha"}))
+    monkeypatch.setenv("HOTWIRE_DATA", str(b))
+    rb = json.loads(tools.circuit_check({"path": "rc_lowpass", "name": "beta"}))
+    assert (a / "designs" / ra["design"]).is_dir() and not (a / "designs" / rb["design"]).exists()
+    assert (b / "designs" / rb["design"]).is_dir()
+    assert tools.bench().store.root == b / "designs"

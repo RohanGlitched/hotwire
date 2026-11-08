@@ -10,23 +10,26 @@ from __future__ import annotations
 import json
 import logging
 import re
+import threading
 import traceback
 
 logger = logging.getLogger(__name__)
 
-_BENCH = None
+_BENCHES = {}
+_LOCK = threading.Lock()
 _SAMPLE_RATE = 48000
 
 
 def configure(sample_rate=None):
     """Called from register(ctx) with the user's plugin settings."""
-    global _SAMPLE_RATE, _BENCH
+    global _SAMPLE_RATE
     try:
         sr = int(sample_rate or 48000)
     except (TypeError, ValueError):
         sr = 48000
     _SAMPLE_RATE = sr if sr in (44100, 48000) else 48000
-    _BENCH = None
+    with _LOCK:
+        _BENCHES.clear()
 
 
 def _emit(event: str, payload: dict):
@@ -38,11 +41,17 @@ def _emit(event: str, payload: dict):
 
 
 def bench():
-    global _BENCH
-    if _BENCH is None:
-        from .engine.workbench import Bench
-        _BENCH = Bench(emit=_emit, sample_rate=_SAMPLE_RATE)
-    return _BENCH
+    """The Bench for the active profile: looked up by plugin_data_dir("hotwire") on every call."""
+    from .engine.store import Store, data_dir
+    root = data_dir()
+    key = (str(root), _SAMPLE_RATE)
+    with _LOCK:
+        b = _BENCHES.get(key)
+        if b is None:
+            from .engine.workbench import Bench
+            b = Bench(store=Store(root), emit=_emit, sample_rate=_SAMPLE_RATE)
+            _BENCHES[key] = b
+        return b
 
 
 def _media_lines(result: dict) -> list:

@@ -26,6 +26,22 @@ SR = 48000
 
 # --------------------------------------------------------------------------- wav
 
+AUDIO_MAX = 12_000_000  # bytes; same cap as the dashboard's upload limit
+
+
+def user_wav(path: str | Path) -> Path:
+    """A user-supplied recording: must be a regular ``.wav`` file of at most 12 MB."""
+    p = Path(str(path)).expanduser()
+    if p.suffix.lower() != ".wav":
+        raise ValueError(f"{p.name} is not a .wav file")
+    if not p.is_file():
+        raise ValueError(f"can't find the WAV file {path}")
+    size = p.stat().st_size
+    if size > AUDIO_MAX:
+        raise ValueError(f"{p.name} is {size / 1e6:.1f} MB; recordings must be at most {AUDIO_MAX / 1e6:g} MB")
+    return p
+
+
 def read_wav(path: str | Path) -> tuple[np.ndarray, int]:
     """Read a WAV as mono float samples in [-1, 1] and its sample rate.
 
@@ -33,7 +49,10 @@ def read_wav(path: str | Path) -> tuple[np.ndarray, int]:
     WAVE_FORMAT_EXTENSIBLE).  The stdlib ``wave`` module rejects float files,
     so the RIFF chunks are walked directly.  Multi-channel audio is averaged.
     """
-    data = Path(path).read_bytes()
+    p = Path(path)
+    if not p.is_file() or p.stat().st_size > AUDIO_MAX:
+        raise ValueError(f"{p.name} is not a WAV file of at most {AUDIO_MAX / 1e6:g} MB")
+    data = p.read_bytes()
     if len(data) < 12 or data[:4] != b"RIFF" or data[8:12] != b"WAVE":
         raise ValueError(f"{path} is not a RIFF/WAVE file")
     pos = 12

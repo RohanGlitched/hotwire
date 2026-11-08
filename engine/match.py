@@ -75,9 +75,9 @@ def distance(a: dict, b: dict) -> float:
 
 
 def load_pair(dry_path: str, wet_path: str, sr: int = 24000, seconds: float = 1.0):
-    from .audio import read_wav
-    d, sr_d = read_wav(dry_path)
-    w, sr_w = read_wav(wet_path)
+    from .audio import read_wav, user_wav
+    d, sr_d = read_wav(user_wav(dry_path))
+    w, sr_w = read_wav(user_wav(wet_path))
     d = _resample(np.asarray(d, float), sr_d, sr)
     w = _resample(np.asarray(w, float), sr_w, sr)
     n = min(len(d), len(w))

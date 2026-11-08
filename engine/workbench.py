@@ -90,9 +90,10 @@ def _audio_source(audio, name: str, sr: int, seconds: float, raw: bool = False) 
     """A named demo source or a user WAV, mono at ``sr``, ``seconds`` long, peak 1."""
     name = str(name or "guitar_riff")
     if name.lower().endswith(".wav"):
-        p = Path(name).expanduser()
-        if not p.is_file():
-            raise NetlistError(0, f"can't find the WAV file {name}")
+        try:
+            p = audio.user_wav(name)
+        except ValueError as e:
+            raise NetlistError(0, str(e))
         x, file_sr = audio.read_wav(p)
         x = np.asarray(x, dtype=float)
         if x.ndim > 1:
@@ -511,18 +512,19 @@ class Bench:
             m = float(np.max(np.abs(arr)))
             if m > 0.98:
                 arr *= 0.98 / m
-        tag = "sweep-" + slugify(str(sweep.get("pot", ""))) if sweep else (Path(source).stem if str(source).endswith(".wav") else source)
+        parts = ["sweep", slugify(str(sweep.get("pot", "")))] if sweep else             [slugify(Path(str(source)).stem if str(source).lower().endswith(".wav") else str(source))]
         if guitar_volume is not None and not sweep_guitar and float(guitar_volume) != 1.0:
-            tag += f"-gv{int(round(float(guitar_volume) * 100)):02d}"
+            parts.append(f"gv{int(round(float(guitar_volume) * 100)):02d}")
         if pots:
-            tag += "-" + "-".join(f"{k.lower()}{int(round(float(v) * 100)):02d}" for k, v in sorted(pots.items()))
-        pd, pw = vdir / f"dry-{tag}.wav", vdir / f"circuit-{tag}.wav"
+            parts += [f"{slugify(str(k))}{int(round(float(v) * 100)):02d}" for k, v in sorted(pots.items())]
+        tag = "-".join(p for p in parts if p)[:100].strip("-") or "audio"
+        pd, pw = self.store.file(vdir, f"dry-{tag}.wav"), self.store.file(vdir, f"circuit-{tag}.wav")
         audio.write_wav(pd, dryn, sr)
         audio.write_wav(pw, wet, sr)
         media = [str(pw), str(pd)]
         try:
             from .plot import spectrum_svg
-            ps = vdir / f"spectrum-{tag}.svg"
+            ps = self.store.file(vdir, f"spectrum-{tag}.svg")
             ps.write_text(spectrum_svg(y, sr, ref=bypass * (rms(y) / rms(bypass))), encoding="utf-8")
             media.append(str(ps))
         except Exception:
@@ -539,7 +541,7 @@ class Bench:
             "summary": (f"rendered {seconds:g} s of {source} at {level:g} V through '{c.title}' in {render_s:.1f} s; "
                         f"level change {gain_db:+.1f} dB RMS (A/B files are loudness-matched)"),
         }
-        (vdir / f"audition-{tag}.json").write_text(json.dumps(result, indent=1), encoding="utf-8")
+        self.store.file(vdir, f"audition-{tag}.json").write_text(json.dumps(result, indent=1), encoding="utf-8")
         self.emit("design.audition", {"design": did, "version": v, "wet": str(pw), "dry": str(pd)})
         return result
 

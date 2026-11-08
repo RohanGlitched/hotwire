@@ -62,6 +62,16 @@ class Store:
             k += 1
         return did
 
+    def file(self, folder: Path, name: str) -> Path:
+        """``folder / name``, refused unless it resolves inside this store."""
+        if not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._-]{0,120}", name) or ".." in name:
+            raise ValueError(f"unsafe output file name {name!r}")
+        p = (Path(folder) / name).resolve()
+        root = self.root.parent.resolve()
+        if p.parent != Path(folder).resolve() or not p.is_relative_to(root):
+            raise ValueError(f"output path {p} is outside the Hotwire data folder")
+        return p
+
     # -- versions ------------------------------------------------------------
     def latest_netlist(self, did: str) -> str:
         m = self.meta(did)

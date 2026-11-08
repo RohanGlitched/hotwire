@@ -29,6 +29,9 @@ import re
 import shlex
 from dataclasses import dataclass, field
 
+# pot names become part of output file names; same rule as the dashboard's _POT_RE
+POT_NAME_RE = re.compile(r"[A-Za-z][A-Za-z0-9_]{0,31}")
+
 __all__ = [
     "NetlistError", "Model", "Element", "Pot", "Circuit", "parse", "parse_value",
     "format_value", "pot_fraction", "eval_expr",
@@ -811,6 +814,8 @@ def parse(text: str) -> Circuit:
                     toks = arg.split()
                 if len(toks) < 5:
                     raise NetlistError(ln, "pot needs: *@ pot RV1 a wiper b 100k [taper=log] [pos=0.5] [label=\"Gain\"]")
+                if not POT_NAME_RE.fullmatch(toks[0]):
+                    raise NetlistError(ln, f"pot name '{toks[0]}' must be a letter then letters, digits or _ (up to 32), e.g. RV1")
                 pname = toks[0].upper()
                 if pname in pots or pname in names:
                     raise NetlistError(ln, f"{pname} is defined twice")
